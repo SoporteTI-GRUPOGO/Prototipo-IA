@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Piloto Mantra: prototipo</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700;800&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#C8133B}a:hover{color:#A50F31}
+</style>
+</helmet>
+<div style="position: relative; width: 960px; height: 900px; background: #F7F7F8; font-family: 'Mulish', system-ui, sans-serif; color: #111111">
+<div style="position: absolute; left: 32px; top: 28px; width: 390px; height: 844px; box-sizing: border-box; border: 8px solid #111111; border-radius: 40px; overflow: hidden; display: flex; flex-direction: column; background: #F1F1F2">
+<div style="height: 64px; flex: 0 0 auto; background: #FFFFFF; color: #111111; display: flex; align-items: center; gap: 12px; padding: 0 16px; border-bottom: 1px solid #E6E7E8">
+<img src="./assets/3ca9eaf534480ded87b7436a79f2adcc.png" alt="GO HOUSE Inmobiliaria" style="width: 40px; height: 40px; border-radius: 20px; object-fit: cover; flex: 0 0 auto">
+<div style="display: flex; flex-direction: column"><span style="font-weight: 800; font-size: 16px; line-height: 20px">GO HOUSE Inmobiliaria</span><span style="font-size: 12px; line-height: 16px; color: #5F6164">Asistente virtual · Mantra IA</span></div>
+</div>
+<div ref="{{chatRef}}" style="flex: 1 1 auto; overflow-y: auto; padding: 16px 12px; display: flex; flex-direction: column; gap: 8px">
+<sc-for list="{{msgs}}" as="m" hint-placeholder-count="3">
+<sc-if value="{{m.isNote}}" hint-placeholder-val="{{false}}">
+<div style="align-self: center; background: #FFF6DE; color: #5A4A1E; font-size: 12px; line-height: 16px; padding: 4px 10px; border-radius: 8px; text-align: center; max-width: 85%">{{m.text}}</div>
+</sc-if>
+<sc-if value="{{m.isBot}}" hint-placeholder-val="{{true}}">
+<div style="align-self: flex-start; max-width: 84%; background: #FFFFFF; padding: 8px 12px; border-radius: 4px 12px 12px 12px; font-size: 14px; line-height: 20px; white-space: pre-line">{{m.text}}</div>
+</sc-if>
+<sc-if value="{{m.isCard}}" hint-placeholder-val="{{false}}">
+<div style="align-self: flex-start; width: 84%; background: #FFFFFF; border-radius: 4px 12px 12px 12px; overflow: hidden">
+<div style="height: 112px; background: #DCDDDE; display: flex; align-items: center; justify-content: center; color: #3D3E40; font-size: 12px; letter-spacing: 0.04em">[FOTO DEL PROYECTO]</div>
+<div style="padding: 10px 12px; display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 800; font-size: 15px; line-height: 20px">{{m.title}}</span><span style="font-size: 12px; line-height: 16px; color: #5F6164">{{m.sub}}</span><span style="font-size: 14px; line-height: 20px; color: #3D3E40; white-space: pre-line">{{m.text}}</span></div>
+</div>
+</sc-if>
+<sc-if value="{{m.isDoc}}" hint-placeholder-val="{{false}}">
+<div style="align-self: flex-start; width: 84%; box-sizing: border-box; background: #FFFFFF; border-radius: 4px 12px 12px 12px; padding: 10px 12px; display: flex; align-items: center; gap: 10px">
+<svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" style="flex: 0 0 auto; fill: none; stroke: #C8133B; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path></svg>
+<div style="display: flex; flex-direction: column"><span style="font-size: 14px; line-height: 20px; font-weight: 700">{{m.text}}</span><span style="font-size: 12px; line-height: 16px; color: #5F6164">{{m.meta}}</span></div>
+</div>
+</sc-if>
+<sc-if value="{{m.flowPending}}" hint-placeholder-val="{{false}}">
+<div style="align-self: flex-start; width: 84%; background: #FFFFFF; border-radius: 12px; overflow: hidden">
+<button onClick="{{m.open}}" style="width: 100%; height: 44px; border: 0; background: #FFFFFF; color: #117A42; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Completar datos</button>
+</div>
+</sc-if>
+<sc-if value="{{m.flowDone}}" hint-placeholder-val="{{false}}">
+<div style="align-self: flex-start; width: 84%; box-sizing: border-box; background: #FFFFFF; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 20px; color: #5F6164; text-align: center">Formulario enviado</div>
+</sc-if>
+<sc-if value="{{m.isUser}}" hint-placeholder-val="{{false}}">
+<div style="align-self: flex-end; max-width: 84%; background: #FDE3E8; padding: 8px 12px; border-radius: 12px 4px 12px 12px; font-size: 14px; line-height: 20px; white-space: pre-line">{{m.text}}</div>
+</sc-if>
+</sc-for>
+<sc-if value="{{isButtons}}" hint-placeholder-val="{{false}}">
+<div style="align-self: flex-start; width: 84%; display: flex; flex-direction: column; gap: 4px">
+<sc-for list="{{items}}" as="o" hint-placeholder-count="3">
+<button onClick="{{o.pick}}" style="min-height: 44px; padding: 8px 12px; border: 0; border-radius: 10px; background: #FFFFFF; color: #117A42; font: inherit; font-size: 14px; font-weight: 700; text-align: center; cursor: pointer">{{o.label}}</button>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{isList}}" hint-placeholder-val="{{false}}">
+<div style="align-self: flex-start; width: 84%">
+<button onClick="{{openList}}" style="width: 100%; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 10px; background: #FFFFFF; color: #117A42; font: inherit; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #117A42; stroke-width: 2; stroke-linecap: round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"></path></svg>{{listButton}}</button>
+</div>
+</sc-if>
+</div>
+<div style="height: 60px; flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 0 12px; border-top: 1px solid #DEDFE0">
+<label for="msgPiloto" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Mensaje</label>
+<input id="msgPiloto" disabled="" placeholder="Elige una opción en el chat" style="flex: 1 1 auto; height: 40px; box-sizing: border-box; border-radius: 20px; border: 1px solid #D3D4D6; padding: 0 16px; font: inherit; font-size: 14px; background: #FFFFFF">
+<button aria-label="Enviar mensaje" disabled="" style="width: 44px; height: 44px; border-radius: 22px; border: 0; background: #C8133B; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #FFFFFF; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M4 12l16-8-6 16-2-7z"></path></svg></button>
+</div>
+<sc-if value="{{listOpen}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.45); display: flex; flex-direction: column; justify-content: flex-end">
+<div style="background: #FFFFFF; border-radius: 16px 16px 0 0; display: flex; flex-direction: column; max-height: 640px; overflow: hidden">
+<div style="height: 56px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; border-bottom: 1px solid #D9DADB">
+<button aria-label="Cerrar lista" onClick="{{closeList}}" style="width: 44px; height: 44px; border: 0; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #111111; stroke-width: 2.6; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+<span style="font-size: 17px; line-height: 24px; font-weight: 700">{{listButton}}</span>
+<span style="width: 44px; height: 44px"></span>
+</div>
+<div style="overflow-y: auto; padding: 4px 0 12px">
+<sc-for list="{{items}}" as="o" hint-placeholder-count="4">
+<button onClick="{{o.pick}}" style="width: 100%; min-height: 60px; padding: 10px 18px; border: 0; border-bottom: 1px solid #EEEFF0; background: #FFFFFF; font: inherit; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; line-height: 20px; font-weight: 700; color: #111111">{{o.label}}</span><span style="font-size: 13px; line-height: 18px; color: #5F6164">{{o.desc}}</span></span>
+<span style="flex: 0 0 auto; width: 20px; height: 20px; box-sizing: border-box; border: 1.5px solid #5F6164; border-radius: 50%"></span>
+</button>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{showFlow}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.45); display: flex; flex-direction: column; justify-content: flex-end">
+<div style="height: 760px; background: #FFFFFF; border-radius: 16px 16px 0 0; display: flex; flex-direction: column; overflow: hidden">
+<div style="height: 56px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 6px; border-bottom: 1px solid #D9DADB">
+<button aria-label="Cerrar formulario" onClick="{{closeFlow}}" style="width: 44px; height: 44px; border: 0; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #111111; stroke-width: 2.6; stroke-linecap: round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+<sc-if value="{{step1}}" hint-placeholder-val="{{true}}"><span style="font-size: 19px; line-height: 24px; color: #111111">Bienvenido</span></sc-if>
+<sc-if value="{{step2}}" hint-placeholder-val="{{false}}"><span style="font-size: 19px; line-height: 24px; color: #111111">Cuéntanos sobre ti</span></sc-if>
+<button aria-label="Más opciones" style="width: 44px; height: 44px; border: 0; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #111111; stroke-width: 2; stroke-linecap: round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+</div>
+<div style="position: relative; flex: 1 1 auto; min-height: 0">
+<sc-if value="{{step1}}" hint-placeholder-val="{{true}}">
+<div style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 20px 18px 18px; display: flex; flex-direction: column; justify-content: space-between">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 21px; line-height: 30px; font-weight: 800; color: #111111">¡Hola! 👋 Bienvenido a Go House Inmobiliaria 🏡</h2>
+<p style="margin: 0; font-size: 16px; line-height: 23px; color: #222222">Estamos felices de ayudarte a encontrar una oportunidad de inversión o el espacio ideal para tu próximo proyecto.</p>
+</div>
+<button onClick="{{nextStep}}" style="height: 44px; border: 0; border-radius: 22px; background: #117A42; color: #FFFFFF; font: inherit; font-size: 17px; font-weight: 700; cursor: pointer">Continuar</button>
+</div>
+</sc-if>
+<sc-if value="{{step2}}" hint-placeholder-val="{{false}}">
+<div style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; box-sizing: border-box; overflow-y: auto; padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 22px">
+<p style="margin: 0; font-size: 16px; line-height: 23px; color: #222222">Queremos conocerte un poquito más para brindarte una atención personalizada. ✨</p>
+<label style="position: relative; display: block; flex: 0 0 auto"><span style="position: absolute; left: 10px; top: -10px; padding: 0 4px; background: #FFFFFF; font-size: 15px; line-height: 18px; font-weight: 700; color: #111111">Nombre completo</span><input value="{{form.nombre}}" onChange="{{onNombre}}" placeholder="Texto" style="width: 100%; height: 48px; box-sizing: border-box; border: 1.5px solid #5F6164; border-radius: 8px; padding: 6px 16px 0; font: inherit; font-size: 16px; color: #111111; background: #FFFFFF"></label>
+<label style="position: relative; display: block; flex: 0 0 auto"><span style="position: absolute; left: 10px; top: -10px; padding: 0 4px; background: #FFFFFF; font-size: 15px; line-height: 18px; font-weight: 700; color: #111111">Correo electrónico</span><input type="email" value="{{form.correo}}" onChange="{{onCorreo}}" placeholder="Correo electrónico" style="width: 100%; height: 48px; box-sizing: border-box; border: 1.5px solid #5F6164; border-radius: 8px; padding: 6px 16px 0; font: inherit; font-size: 16px; color: #111111; background: #FFFFFF"></label>
+<label style="position: relative; display: block; flex: 0 0 auto"><span style="position: absolute; left: 10px; top: -10px; padding: 0 4px; background: #FFFFFF; font-size: 15px; line-height: 18px; font-weight: 700; color: #111111">DNI</span><input inputmode="numeric" value="{{form.doc}}" onChange="{{onDoc}}" placeholder="Número" style="width: 100%; height: 48px; box-sizing: border-box; border: 1.5px solid #5F6164; border-radius: 8px; padding: 6px 16px 0; font: inherit; font-size: 16px; color: #111111; background: #FFFFFF"></label>
+<label style="position: relative; display: block; flex: 0 0 auto"><span style="position: absolute; left: 10px; top: -10px; padding: 0 4px; background: #FFFFFF; font-size: 15px; line-height: 18px; font-weight: 700; color: #111111">Número de teléfono</span><input type="tel" value="{{form.telefono}}" onChange="{{onTelefono}}" placeholder="Número" style="width: 100%; height: 48px; box-sizing: border-box; border: 1.5px solid #5F6164; border-radius: 8px; padding: 6px 16px 0; font: inherit; font-size: 16px; color: #111111; background: #FFFFFF"></label>
+<div style="display: flex; flex-direction: column; gap: 4px; flex: 0 0 auto">
+<span style="font-size: 18px; line-height: 24px; font-weight: 700; color: #111111">Autorización de uso de datos</span>
+<span style="font-size: 13px; line-height: 17px; color: #5F6164">Marca la casilla si autorizas el tratamiento de tus datos personales según la política de privacidad Ley Nº 29733</span>
+<label style="display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: 16px; font-weight: 700; color: #111111; cursor: pointer">Si<input type="checkbox" checked="{{form.consent}}" onChange="{{toggleConsent}}" style="appearance: none; -webkit-appearance: none; margin: 0 2px 0 0; width: 22px; height: 22px; border: 1.5px solid #3D3E40; border-radius: 50%; background: {{checkBg}}; box-shadow: inset 0 0 0 3px #FFFFFF; cursor: pointer"></label>
+</div>
+<span style="flex: 0 0 auto; font-size: 13px; line-height: 18px; color: #5F6164">Gracias por contactarnos. Te responderemos pronto.</span>
+<button onClick="{{submitFlow}}" disabled="{{noConsent}}" style="flex: 0 0 auto; height: 44px; border: 0; border-radius: 22px; background: #117A42; color: #FFFFFF; font: inherit; font-size: 17px; font-weight: 700; cursor: pointer; opacity: {{sendOpacity}}">Enviar</button>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+<div style="position: absolute; left: 462px; top: 28px; width: 466px; height: 844px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #D9DADB; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden">
+<div style="padding: 18px 24px 14px; border-bottom: 1px solid #E6E7E8; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; letter-spacing: 0.06em; text-transform: uppercase; color: #4B4C4F; font-weight: 700">Piloto · Leads orgánicos</span><span style="font-size: 20px; line-height: 28px; font-weight: 800">Lo que pasa en el CRM</span></div>
+<button onClick="{{reset}}" style="height: 44px; padding: 0 16px; border: 1px solid #C9CACC; border-radius: 22px; background: #FFFFFF; color: #111111; font: inherit; font-size: 14px; cursor: pointer">Reiniciar</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; line-height: 16px; color: #5F6164">Cómo llega el lead</span>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{entries}}" as="e" hint-placeholder-count="3">
+<button onClick="{{e.pick}}" aria-pressed="{{e.on}}" style="min-height: 44px; padding: 4px 8px; border-radius: 10px; border: 1.5px solid {{e.border}}; background: {{e.bg}}; color: {{e.color}}; font: inherit; font-size: 13px; line-height: 16px; font-weight: 700; cursor: pointer">{{e.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; background: #F7F7F8; border-radius: 12px; padding: 12px 16px">
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; color: #5F6164">Contacto</span><span style="font-size: 14px; line-height: 20px; font-weight: 700">{{contact.nombre}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; color: #5F6164">Etapa</span><span style="font-size: 14px; line-height: 20px; font-weight: 700; color: #C8133B">{{contact.etapa}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; color: #5F6164">Proyecto</span><span style="font-size: 14px; line-height: 20px; font-weight: 700">{{contact.proyecto}}</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; color: #5F6164">Motivo de compra</span><span style="font-size: 14px; line-height: 20px; font-weight: 700">{{contact.motivo}}</span></div>
+</div>
+<sc-if value="{{hasSims}}" hint-placeholder-val="{{true}}">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 12px; line-height: 16px; color: #5F6164">Simular lo que hace el lead</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{sims}}" as="x" hint-placeholder-count="2">
+<button onClick="{{x.run}}" style="min-height: 40px; padding: 0 14px; border: 1px dashed #B9A46A; border-radius: 20px; background: #FFF6DE; color: #5A4A1E; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{x.label}}</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</div>
+<div ref="{{logRef}}" style="flex: 1 1 auto; overflow-y: auto; padding: 14px 24px 24px; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{log}}" as="l" hint-placeholder-count="3">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<span style="flex: 0 0 auto; width: 28px; height: 28px; border-radius: 14px; background: #FDE8EC; color: #C8133B; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{l.num}}</span>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; font-weight: 700; color: #C8133B; text-transform: uppercase; letter-spacing: 0.04em">{{l.tag}}</span><span style="font-size: 14px; line-height: 20px; color: #111111; white-space: pre-line">{{l.text}}</span></div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":960,"height":900}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.chatEl = null;
+this.logEl = null;
+this.state = this.fresh('hola');
+}
+proj() {
+return {
+'Alameda de Paracas': { short: 'Alameda de Paracas', zona: 'Paracas, Ica', desc: 'Entre la antigua y la nueva Panamericana Sur. Lotes residenciales y comerciales.', row: 'Paracas · lotes residenciales y comerciales' },
+'Fundo de Asia': { short: 'Fundo de Asia', zona: 'Asia, Cañete', desc: 'A pocos minutos del Boulevard de Asia. Lotes de campo con servicios básicos y áreas comunes.', row: 'Asia · lotes de campo cerca del Boulevard' },
+'Caballerizas de San José II': { short: 'Caballerizas San José II', zona: 'El Carmen, Chincha', desc: 'Lotes desde 300 m² con áreas comunes, como juegos para niños y gimnasio.', row: 'Chincha · lotes desde 300 m²' },
+'Yakuruma': { short: 'Yakuruma', zona: '[UBICACIÓN]', desc: '[DESCRIPCIÓN DEL PROYECTO]', row: '[UBICACIÓN] · [TIPO DE LOTES]' }
+};
+}
+fresh(entry) {
+var firstMsg = { hola: 'Hola, quisiera información', fundo: 'Hola, quiero información de Fundo de Asia', promo: 'Hola, vi la promo en Instagram y quiero más información' }[entry];
+var proyecto = entry === 'fundo' ? 'Fundo de Asia' : (entry === 'promo' ? 'Alameda de Paracas' : '');
+var log = [
+{ tag: 'Entrada', text: 'Mensaje de +51 900 000 321 por WhatsApp (nombre de perfil: María).' },
+{ tag: 'Búsqueda', text: 'El número no existe en el CRM: se registra como lead nuevo. Etapa: Nuevo.' }
+];
+if (entry === 'fundo') log.push({ tag: 'Proyecto', text: 'La IA detecta «Fundo de Asia» en el mensaje. No volverá a preguntar el proyecto.' });
+if (entry === 'promo') log.push({ tag: 'Proyecto', text: 'Origen identificado: publicación de Instagram «[NOMBRE DE LA PROMO]» → Alameda de Paracas. No volverá a preguntar el proyecto.' });
+log.push({ tag: 'Paso 1', text: 'Bienvenida automática con el botón del formulario (WhatsApp Flow).' });
+return {
+entry: entry,
+msgs: [
+{ who: 'user', text: firstMsg },
+{ who: 'bot', text: '¡Hola María! 👋 Soy el asistente virtual de GO HOUSE INMOBILIARIA 🏡.\n\nPara atenderte mejor, compárteme tus datos a través del siguiente formulario. ¡Te tomará menos de un minuto! 😊' },
+{ who: 'flow', done: false }
+],
+opts: null,
+phase: 'flow',
+log: log,
+showFlow: false,
+flowStep: 1,
+listOpen: false,
+reminded: false,
+form: { nombre: '', correo: '', doc: '', telefono: '', consent: false },
+contact: { nombre: 'María (perfil de WhatsApp)', proyecto: proyecto || '—', motivo: '—', etapa: 'Nuevo' },
+ctx: { proyecto: proyecto, motivo: '', last: firstMsg, nombre: '', corto: 'María', tel: '+51 900 000 321' }
+};
+}
+componentDidUpdate() {
+if (this.chatEl) this.chatEl.scrollTop = this.chatEl.scrollHeight;
+if (this.logEl) this.logEl.scrollTop = this.logEl.scrollHeight;
+}
+nm() { return this.state.ctx.corto || 'María'; }
+setForm(key, val) {
+var f = Object.assign({}, this.state.form);
+f[key] = val;
+this.setState({ form: f });
+}
+push(userText, bots, logs, opts, phase, contactPatch, ctxPatch) {
+var s = this.state;
+var msgs = s.msgs.slice();
+if (userText) msgs.push({ who: 'user', text: userText });
+(bots || []).forEach(function (b) { msgs.push(typeof b === 'string' ? { who: 'bot', text: b } : b); });
+var ctx = Object.assign({}, s.ctx, ctxPatch || {});
+if (userText) ctx.last = userText;
+this.setState({
+msgs: msgs,
+opts: opts || null,
+phase: phase || s.phase,
+log: s.log.concat(logs || []),
+contact: Object.assign({}, s.contact, contactPatch || {}),
+ctx: ctx,
+listOpen: false
+});
+}
+projectList(withAll) {
+var P = this.proj();
+var items = Object.keys(P).map(function (k) { return { label: P[k].short, desc: P[k].row, key: 'proj', val: k }; });
+if (withAll) items.push({ label: 'Ver todos los proyectos', desc: 'Te muestro un resumen de cada uno', key: 'todos' });
+return { kind: 'list', button: 'Ver proyectos', items: items };
+}
+needList() {
+return { kind: 'list', button: 'Ver opciones', items: [
+{ label: 'Lote para mi casa', desc: 'Comprar un lote para construir mi casa', key: 'need', val: 'casa', motivo: 'Lote para su casa' },
+{ label: 'Casa de campo', desc: 'Tener una casa de campo o segunda vivienda', key: 'need', val: 'campo', motivo: 'Casa de campo o segunda vivienda' },
+{ label: 'Inversión', desc: 'Comprar para inversión', key: 'need', val: 'inversion', motivo: 'Inversión' },
+{ label: 'Conocer opciones', desc: 'Quiero conocer las opciones antes de decidir', key: 'need', val: 'opciones', motivo: 'Explorando opciones' }
+] };
+}
+invite() {
+return { kind: 'buttons', items: [
+{ label: 'Visita presencial', key: 'presencial' },
+{ label: 'Asesoría virtual', key: 'virtual' },
+{ label: 'Prefiero una llamada', key: 'llamada' }
+] };
+}
+inviteText(P) {
+return '¡' + this.nm() + ', me encantaría que puedas conocer más de cerca ' + P + '! 😊\n\nPodemos coordinar una atención personalizada para que conozcas el proyecto, sus características y las opciones disponibles.\n\n¿Cómo te gustaría conocerlo?';
+}
+summary(last) {
+var c = this.state.ctx;
+return 'Resumen enviado al asesor:\nNombre: ' + (c.nombre || 'María') + '\nContacto: ' + (c.tel || '+51 900 000 321') + '\nProyecto: ' + (c.proyecto || 'Por definir') + '\nMotivo de compra: ' + (c.motivo || 'No indicado') + '\nPresupuesto o inicial: No indicado\nTiempo estimado de compra: No indicado\nÚltima consulta: ' + (last || c.last);
+}
+derive(userText, botText, reason) {
+this.push(userText, [botText, { who: 'note', text: 'Conversación derivada a [NOMBRE DEL ASESOR]' }],
+[{ tag: 'Derivación', text: 'Motivo: ' + reason + '.' },
+{ tag: 'Asesor', text: this.summary(userText) },
+{ tag: 'CRM', text: 'Conversación asignada al asesor con todo el historial. Etapa: Derivado a asesor.' }],
+null, 'derivado', { etapa: 'Derivado a asesor' });
+}
+confirm(userText, fecha, hora, extra) {
+var c = this.state.ctx, n = this.nm();
+var bots = ['¡Tu cita ha sido registrada, ' + n + '! 🎉\n\nDetalles de tu atención:\n\n📍 Proyecto: ' + c.proyecto + '\n📅 Fecha: ' + fecha + '\n🕒 Hora: ' + hora + '\n👤 Modalidad: ' + c.modalidad + '\n\nUn asesor de Go House estará preparado para atenderte.\n\n¡Te esperamos!'];
+if (c.modalidad === 'Asesoría virtual') bots.push('Te enviaremos el enlace de la reunión un día antes. 💻');
+var logs = (extra || []).concat([
+{ tag: 'Paso 7 · Cita', text: 'Cita registrada en el CRM: ' + c.proyecto + ' · ' + fecha + ' · ' + hora + ' · ' + c.modalidad + '. Asignada a [NOMBRE DEL ASESOR].' },
+{ tag: 'Recordatorio', text: 'Recordatorio por WhatsApp programado 24 h antes de la cita.' },
+{ tag: 'Asesor', text: this.summary(userText) }
+]);
+this.push(userText, bots, logs, null, 'done', { etapa: 'Cita agendada' });
+}
+submitFlow() {
+var s = this.state, f = s.form;
+if (!f.consent) return;
+var full = (f.nombre || '').trim() || 'María Torres';
+var doc = (f.doc || '').trim() || '45678912';
+var correo = (f.correo || '').trim() || 'maria.torres@correo.com';
+var tel = (f.telefono || '').trim() || '+51 900 000 321';
+var corto = full.split(' ')[0];
+var P = s.ctx.proyecto;
+var msgs = s.msgs.map(function (m) { return m.who === 'flow' ? Object.assign({}, m, { done: true }) : m; });
+var opts, phase;
+var logs = [
+{ tag: 'Paso 2 · Registro', text: 'Datos del Flow guardados: ' + full + ' · DNI ' + doc + ' · ' + correo + ' · ' + tel + '. Etapa: Registrado.' },
+{ tag: 'Clasificación', text: 'Canal de entrada: WhatsApp · Medio de captación: ' + (s.entry === 'promo' ? 'Redes sociales (promo)' : 'Orgánico') + '.' },
+{ tag: 'Consentimiento', text: 'Autorización de datos personales: Sí, con fecha y hora guardadas.' }
+];
+if (P) {
+msgs.push({ who: 'bot', text: '¡Muchas gracias por registrarte, ' + corto + '! 😊\n\nVeo que te interesa ' + P + '. ¡Excelente elección! 🙌 Para brindarte información más precisa, quisiera saber:\n\n¿Qué estás buscando actualmente?' });
+opts = this.needList(); phase = 'necesidad';
+logs.push({ tag: 'Paso 3', text: 'Proyecto ya conocido: se salta la pregunta y pasa a la necesidad.' });
+} else {
+msgs.push({ who: 'bot', text: '¡Muchas gracias por registrarte, ' + corto + '! 😊\n\nEstamos listos para ayudarte a encontrar el proyecto que mejor se adapte a lo que buscas. Para comenzar, cuéntame:\n\n¿Qué proyecto de Go House te interesa conocer?' });
+opts = this.projectList(true); phase = 'proyecto';
+}
+this.setState({
+msgs: msgs, showFlow: false, flowStep: 1, opts: opts, phase: phase,
+form: Object.assign({}, f, { nombre: full, doc: doc, correo: correo, telefono: tel }),
+log: s.log.concat(logs),
+contact: Object.assign({}, s.contact, { nombre: full, etapa: 'Registrado' }),
+ctx: Object.assign({}, s.ctx, { nombre: full, corto: corto, tel: tel })
+});
+}
+choose(o) {
+var s = this.state, c = s.ctx, n = this.nm(), L = o.label;
+var P = c.proyecto;
+switch (o.key) {
+case 'proj':
+return this.push(L, ['¡Excelente elección! 🙌 Para brindarte información más precisa, quisiera saber:\n\n¿Qué estás buscando actualmente?'],
+[{ tag: 'Paso 3 · Proyecto', text: 'Proyecto de interés: ' + o.val + '. Etapa: Interesado.' }],
+this.needList(), 'necesidad', { proyecto: o.val, etapa: 'Interesado' }, { proyecto: o.val });
+case 'todos':
+return this.push(L, ['¡Claro! Estos son nuestros proyectos:\n\n• Alameda de Paracas: entre la antigua y la nueva Panamericana Sur, con lotes residenciales y comerciales.\n• Fundo de Asia: a pocos minutos del Boulevard de Asia, ideal como casa de campo o segunda vivienda.\n• Caballerizas de San José II: en El Carmen, Chincha, con lotes desde 300 m² y áreas comunes.\n• Yakuruma: [DESCRIPCIÓN BREVE].', '¿Cuál te gustaría conocer más a fondo?'],
+[{ tag: 'Paso 3', text: 'Pidió ver todos: se envía un resumen y se le pide elegir uno.' }],
+this.projectList(false), 'proyecto');
+case 'need':
+var info = this.proj()[P];
+var intro = {
+casa: 'Para construir tu casa, te cuento lo principal de ' + P + ':',
+campo: 'Para tu casa de campo o segunda vivienda, ' + P + ' es una gran opción. Te cuento lo principal:',
+inversion: 'Como inversión, esto es lo principal que debes saber de ' + P + ':',
+opciones: '¡Perfecto! Te cuento lo principal de ' + P + ' para que compares con calma:'
+}[o.val];
+return this.push(L, [intro,
+{ who: 'card', title: P, sub: info.zona, text: info.desc + '\n\nÁreas: [XX] a [XX] m²\nPrecio desde: [PRECIO]\nFacilidades: inicial desde [MONTO] y cuotas hasta [N] meses' },
+this.inviteText(P)],
+[{ tag: 'Paso 4 · Necesidad', text: 'Motivo de compra: ' + o.motivo + '.' },
+{ tag: 'Paso 5 · Presentación', text: 'Se envía la ficha de ' + P + ' (ubicación, características, precios y facilidades) adaptada a su motivo.' },
+{ tag: 'Paso 6', text: 'Invitación a una cita: presencial, virtual o llamada.' }],
+this.invite(), 'invite', { motivo: o.motivo, etapa: 'Interesado' }, { motivo: o.motivo });
+case 'agendar':
+return this.push(L, [this.inviteText(P)], [], this.invite(), 'invite');
+case 'presencial':
+return this.push(L, ['¡Excelente! 🏡 Será una buena oportunidad para conocer el proyecto y resolver tus dudas.\n\n¿Qué día te gustaría realizar tu visita?'],
+[{ tag: 'Calendario', text: 'Se consultan las fechas con cupo para visitas a ' + P + '.' }],
+{ kind: 'buttons', items: [
+{ label: 'Sáb 7 de noviembre', key: 'fecha' },
+{ label: 'Dom 8 de noviembre', key: 'fecha' },
+{ label: 'Sáb 14 de noviembre', key: 'fecha' }
+] }, 'fecha', null, { modalidad: 'Visita presencial' });
+case 'fecha':
+return this.push(L, ['¡Perfecto! ¿En qué horario te gustaría asistir?'], [],
+{ kind: 'buttons', items: [
+{ label: '9:00 a. m.', key: 'hora' },
+{ label: '11:00 a. m.', key: 'hora' },
+{ label: '3:00 p. m.', key: 'hora' }
+] }, 'hora', null, { fecha: L });
+case 'hora':
+return this.confirm(L, c.fecha, L);
+case 'virtual':
+return this.push(L, ['¡Claro que sí! Podemos coordinar una asesoría virtual para explicarte los detalles del proyecto y resolver todas tus consultas.\n\n¿Qué día y horario te acomodaría mejor?'],
+[{ tag: 'Calendario', text: 'Se consultan los horarios libres de los asesores para asesorías virtuales.' }],
+{ kind: 'list', button: 'Ver horarios', items: [
+{ label: 'Lun 9 nov · 6:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Lunes 9 de noviembre', h: '6:00 p. m.' },
+{ label: 'Mar 10 nov · 7:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Martes 10 de noviembre', h: '7:00 p. m.' },
+{ label: 'Mié 11 nov · 12:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Miércoles 11 de noviembre', h: '12:00 p. m.' },
+{ label: 'Sáb 14 nov · 10:00 a. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Sábado 14 de noviembre', h: '10:00 a. m.' }
+] }, 'virtual', null, { modalidad: 'Asesoría virtual' });
+case 'slotv':
+return this.confirm(L, o.f, o.h);
+case 'llamada':
+return this.push(L, ['¡Perfecto! ¿En qué horario prefieres que te llamemos?'], [],
+{ kind: 'buttons', items: [
+{ label: 'Hoy, en la tarde', key: 'slotl', f: 'Hoy, jueves 5 de noviembre', h: 'Entre 3:00 y 6:00 p. m.' },
+{ label: 'Mañana en la mañana', key: 'slotl', f: 'Viernes 6 de noviembre', h: 'Entre 9:00 a. m. y 12:00 p. m.' },
+{ label: 'Mañana en la tarde', key: 'slotl', f: 'Viernes 6 de noviembre', h: 'Entre 3:00 y 6:00 p. m.' }
+] }, 'llamada', null, { modalidad: 'Llamada telefónica' });
+case 'slotl':
+return this.confirm(L, o.f, o.h, [{ tag: 'Disponibilidad', text: 'El asesor [NOMBRE] tiene espacio en ese horario: se programa la llamada.' }]);
+case 'info':
+return this.push(L, [{ who: 'doc', text: 'Brochure ' + P + '.pdf', meta: 'Planos, áreas y facilidades de pago · PDF' }, 'Aquí tienes el brochure de ' + P + '. 😊 Y cuando quieras, puedes conocerlo en persona. ¿Cómo te gustaría hacerlo?'],
+[{ tag: 'Seguimiento', text: 'Se envía información adicional y se vuelve a proponer la cita.' }],
+this.invite(), 'invite');
+case 'noGracias':
+return this.push(L, ['¡Perfecto, ' + n + '! Quedo atento por aquí. Si te surge cualquier duda sobre ' + P + ', escríbeme. 😊'],
+[{ tag: 'Seguimiento', text: 'Se programa un mensaje en [X] días con información nueva del proyecto, sin repetir lo ya enviado.' }],
+null, 'evaluando', { etapa: 'Evaluando' });
+case 'escribeme':
+return this.push(L, ['¡Perfecto! Te escribo mañana para coordinar tu visita. 🙌'],
+[{ tag: 'Seguimiento', text: 'Se programa retomar la coordinación de la visita mañana.' }],
+null, 'evaluando', { etapa: 'Por agendar' });
+}
+}
+sims() {
+var s = this.state, self = this, n = this.nm(), P = s.ctx.proyecto;
+var asesor = { label: 'Pide hablar con un asesor', run: function () { self.derive('Quiero hablar con un asesor', '¡Claro, ' + self.nm() + '! Te comunico con un asesor de Go House. Ya le compartí tu información para que no tengas que repetirla. Te escribirá por este chat en unos minutos. 😊', 'pidió hablar con un asesor'); } };
+switch (s.phase) {
+case 'flow':
+if (s.reminded) return [];
+return [{ label: 'No completa el formulario', run: function () {
+var msgs = s.msgs.concat([{ who: 'note', text: '[X] horas después' }, { who: 'bot', text: 'María, ¿pudiste completar tus datos? 😊 Solo te tomará un minuto y así podré enviarte la información del proyecto que buscas.' }, { who: 'flow', done: false }]);
+self.setState({ msgs: msgs, reminded: true, log: s.log.concat([{ tag: 'Paso 8 · Seguimiento', text: 'No completó el formulario: se envía un recordatorio (dentro de las 24 h desde su último mensaje).' }]) });
+} }];
+case 'proyecto':
+return [{ label: 'No indica proyecto', run: function () {
+self.push(null, [{ who: 'note', text: '[X] horas después' }, n + ', para enviarte la información correcta, ¿qué proyecto te gustaría conocer? 😊'],
+[{ tag: 'Paso 8 · Seguimiento', text: 'Completó sus datos pero no eligió proyecto: se le vuelve a preguntar.' }],
+self.projectList(true), 'proyecto');
+} }, asesor];
+case 'necesidad':
+return [asesor];
+case 'invite':
+return [
+{ label: 'Pregunta precios y no agenda', run: function () {
+self.push('¿Cuánto cuesta el lote más económico?', ['Los lotes de ' + P + ' tienen precios desde [PRECIO], con una inicial desde [MONTO] y cuotas de hasta [N] meses. 😊\n\nLo ideal es que lo conozcas en persona para elegir la ubicación que más te guste. ¿Cómo te gustaría conocerlo?'],
+[{ tag: 'Paso 8 · Seguimiento', text: 'Consultó precios: la IA resuelve la duda y vuelve a proponer la cita.' }],
+self.invite(), 'invite');
+} },
+{ label: 'Dice «Lo voy a evaluar»', run: function () {
+self.push('Gracias, lo voy a evaluar', ['¡Claro, ' + n + '! Tómate tu tiempo. 😊 ¿Te gustaría que te envíe información adicional, como el brochure con planos y facilidades de pago?'],
+[{ tag: 'Paso 8 · Seguimiento', text: 'Dice que lo evaluará: se ofrece información adicional sin insistir.' }],
+{ kind: 'buttons', items: [{ label: 'Sí, envíame info', key: 'info' }, { label: 'Agendar una cita', key: 'agendar' }, { label: 'No, gracias', key: 'noGracias' }] }, 'evaluar');
+} },
+{ label: 'Pregunta por un lote específico', run: function () {
+self.derive('¿Tienen disponible un lote en esquina de 300 m²?', 'Buena pregunta, ' + n + '. La disponibilidad de cada lote la confirma un asesor en tiempo real, así que te comunico con él ahora mismo. Ya le compartí tu información para que no tengas que repetirla. 😊', 'pidió disponibilidad de un lote específico');
+} },
+asesor];
+case 'fecha':
+case 'hora':
+return [{ label: 'No define la fecha', run: function () {
+self.push('Todavía no sé qué día podría ir', ['¡No te preocupes, ' + n + '! ¿Te escribo mañana para coordinar la fecha de tu visita? Así lo vemos con calma. 😊'],
+[{ tag: 'Paso 8 · Seguimiento', text: 'Quiere visitar pero no define fecha: se ofrece retomar la coordinación.' }],
+{ kind: 'buttons', items: [{ label: 'Sí, escríbeme', key: 'escribeme' }, { label: 'Ver fechas de nuevo', key: 'presencial' }] }, 'fecha');
+} }, asesor];
+case 'virtual':
+case 'llamada':
+case 'evaluar':
+case 'evaluando':
+return [asesor];
+}
+return [];
+}
+renderVals() {
+var self = this, s = this.state;
+var o = s.opts;
+var entries = [
+{ key: 'hola', label: 'Escribe «Hola»' },
+{ key: 'fundo', label: 'Escribe «Fundo de Asia»' },
+{ key: 'promo', label: 'Viene de una promo' }
+].map(function (e) {
+var on = s.entry === e.key;
+return { label: e.label, on: on ? 'true' : 'false', bg: on ? '#C8133B' : '#FFFFFF', color: on ? '#FFFFFF' : '#111111', border: on ? '#C8133B' : '#C9CACC', pick: function () { self.setState(self.fresh(e.key)); } };
+});
+var sims = this.sims();
+return {
+msgs: s.msgs.map(function (m) {
+return {
+text: m.text || '', title: m.title || '', sub: m.sub || '', meta: m.meta || '',
+isUser: m.who === 'user', isBot: m.who === 'bot', isCard: m.who === 'card', isDoc: m.who === 'doc', isNote: m.who === 'note',
+flowPending: m.who === 'flow' && !m.done, flowDone: m.who === 'flow' && !!m.done,
+open: function () { self.setState({ showFlow: true, flowStep: 1 }); }
+};
+}),
+isButtons: !!o && o.kind === 'buttons',
+isList: !!o && o.kind === 'list',
+listButton: o && o.button ? o.button : '',
+items: o ? o.items.map(function (it) { return { label: it.label, desc: it.desc || '', pick: function () { self.choose(it); } }; }) : [],
+listOpen: s.listOpen,
+openList: function () { self.setState({ listOpen: true }); },
+closeList: function () { self.setState({ listOpen: false }); },
+log: s.log.map(function (l, i) { return { tag: l.tag, text: l.text, num: String(i + 1) }; }),
+contact: s.contact,
+entries: entries,
+sims: sims,
+hasSims: sims.length > 0,
+showFlow: s.showFlow,
+step1: s.flowStep === 1,
+step2: s.flowStep === 2,
+nextStep: function () { self.setState({ flowStep: 2 }); },
+closeFlow: function () { self.setState({ showFlow: false }); },
+form: s.form,
+noConsent: !s.form.consent,
+checkBg: s.form.consent ? '#117A42' : '#FFFFFF',
+sendOpacity: s.form.consent ? '1' : '0.45',
+onNombre: function (e) { self.setForm('nombre', e.target.value); },
+onCorreo: function (e) { self.setForm('correo', e.target.value); },
+onDoc: function (e) { self.setForm('doc', e.target.value); },
+onTelefono: function (e) { self.setForm('telefono', e.target.value); },
+toggleConsent: function () { self.setForm('consent', !self.state.form.consent); },
+submitFlow: function () { self.submitFlow(); },
+reset: function () { self.setState(self.fresh(self.state.entry)); },
+chatRef: function (el) { self.chatEl = el; },
+logRef: function (el) { self.logEl = el; }
+};
+}
+}
+</script>
+</body>
+</html>
