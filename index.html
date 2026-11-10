@@ -28,7 +28,7 @@ a{color:#C8133B}a:hover{color:#A50F31}
 <div style="align-self: center; background: #FFF6DE; color: #5A4A1E; font-size: 12px; line-height: 16px; padding: 4px 10px; border-radius: 8px; text-align: center; max-width: 85%">{{m.text}}</div>
 </sc-if>
 <sc-if value="{{m.isBot}}" hint-placeholder-val="{{true}}">
-<div style="align-self: flex-start; max-width: 84%; background: #FFFFFF; padding: 8px 12px; border-radius: 4px 12px 12px 12px; font-size: 14px; line-height: 20px; white-space: pre-line">{{m.text}}</div>
+<div style="align-self: flex-start; max-width: 84%; background: #FFFFFF; padding: 8px 12px; border-radius: 4px 12px 12px 12px; font-size: 14px; line-height: 20px; white-space: pre-line"><sc-for list="{{m.parts}}" as="p" hint-placeholder-count="1"><sc-if value="{{p.b}}" hint-placeholder-val="{{false}}"><b>{{p.t}}</b></sc-if><sc-if value="{{p.n}}" hint-placeholder-val="{{true}}">{{p.t}}</sc-if></sc-for></div>
 </sc-if>
 <sc-if value="{{m.isCard}}" hint-placeholder-val="{{false}}">
 <div style="align-self: flex-start; width: 84%; background: #FFFFFF; border-radius: 4px 12px 12px 12px; overflow: hidden">
@@ -134,14 +134,14 @@ a{color:#C8133B}a:hover{color:#A50F31}
 <div style="position: absolute; left: 462px; top: 28px; width: 466px; height: 844px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #D9DADB; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden">
 <div style="padding: 18px 24px 14px; border-bottom: 1px solid #E6E7E8; display: flex; flex-direction: column; gap: 12px">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; letter-spacing: 0.06em; text-transform: uppercase; color: #4B4C4F; font-weight: 700">Piloto · Leads orgánicos</span><span style="font-size: 20px; line-height: 28px; font-weight: 800">Lo que pasa en el CRM</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; letter-spacing: 0.06em; text-transform: uppercase; color: #4B4C4F; font-weight: 700">Piloto · Mantra IA</span><span style="font-size: 20px; line-height: 28px; font-weight: 800">Lo que pasa en el CRM</span></div>
 <button onClick="{{reset}}" style="height: 44px; padding: 0 16px; border: 1px solid #C9CACC; border-radius: 22px; background: #FFFFFF; color: #111111; font: inherit; font-size: 14px; cursor: pointer">Reiniciar</button>
 </div>
 <div style="display: flex; flex-direction: column; gap: 6px">
-<span style="font-size: 12px; line-height: 16px; color: #5F6164">Cómo llega el lead</span>
+<span style="font-size: 12px; line-height: 16px; color: #5F6164">Cómo llega el lead · fila 1: orgánico · fila 2: formulario de Meta Ads</span>
 <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-<sc-for list="{{entries}}" as="e" hint-placeholder-count="3">
-<button onClick="{{e.pick}}" aria-pressed="{{e.on}}" style="min-height: 44px; padding: 4px 8px; border-radius: 10px; border: 1.5px solid {{e.border}}; background: {{e.bg}}; color: {{e.color}}; font: inherit; font-size: 13px; line-height: 16px; font-weight: 700; cursor: pointer">{{e.label}}</button>
+<sc-for list="{{entries}}" as="e" hint-placeholder-count="6">
+<button onClick="{{e.pick}}" aria-pressed="{{e.on}}" style="min-height: 40px; padding: 4px 8px; border-radius: 10px; border: 1.5px solid {{e.border}}; background: {{e.bg}}; color: {{e.color}}; font: inherit; font-size: 12px; line-height: 15px; font-weight: 700; cursor: pointer">{{e.label}}</button>
 </sc-for>
 </div>
 </div>
@@ -183,40 +183,95 @@ this.state = this.fresh('hola');
 }
 proj() {
 return {
-'Alameda de Paracas': { short: 'Alameda de Paracas', zona: 'Paracas, Ica', desc: 'Entre la antigua y la nueva Panamericana Sur. Lotes residenciales y comerciales.', row: 'Paracas · lotes residenciales y comerciales' },
-'Fundo de Asia': { short: 'Fundo de Asia', zona: 'Asia, Cañete', desc: 'A pocos minutos del Boulevard de Asia. Lotes de campo con servicios básicos y áreas comunes.', row: 'Asia · lotes de campo cerca del Boulevard' },
-'Caballerizas de San José II': { short: 'Caballerizas San José II', zona: 'El Carmen, Chincha', desc: 'Lotes desde 300 m² con áreas comunes, como juegos para niños y gimnasio.', row: 'Chincha · lotes desde 300 m²' },
-'Yakuruma': { short: 'Yakuruma', zona: '[UBICACIÓN]', desc: '[DESCRIPCIÓN DEL PROYECTO]', row: '[UBICACIÓN] · [TIPO DE LOTES]' }
+PAR: { name: 'Alameda de Paracas', short: 'Alameda de Paracas', row: 'Paracas · lotes para vivienda, negocio o inversión', brochure: 'Brochure Alameda de Paracas 2026.pdf',
+needs: [{ label: 'Lote para mi casa', k: 'casa', motivo: 'Lote para su casa' }, { label: 'Negocio o inversión', k: 'inv', motivo: 'Lote para negocio o inversión' }, { label: 'Viendo opciones', k: 'ver', motivo: 'Está viendo opciones' }],
+texts: {
+casa: '¡Excelente! 🏡 Alameda de Paracas es una alternativa para quienes buscan tener un espacio propio y construir su hogar.\n\nEstá ubicado en el km 234 de la Panamericana Sur, a solo 5 minutos de las playas de Paracas y cerca de servicios y zonas comerciales.\n\nAdemás, cuenta con parques, áreas verdes, juegos para niños, pistas y veredas.\n\nTe comparto nuestro brochure para que conozcas más sobre el proyecto y todo lo que ofrece. 📲',
+inv: '¡Excelente! 🙌 Alameda de Paracas cuenta con una ubicación estratégica sobre la misma Panamericana Sur, km 234, cerca de importantes zonas turísticas como la bahía de Paracas y las playas de El Chaco.\n\nUna ubicación interesante para quienes buscan desarrollar un negocio o adquirir un lote como inversión.\n\nTe comparto nuestro brochure para que conozcas más sobre sus características y beneficios. 📲',
+ver: '¡Perfecto! 😊 Alameda de Paracas es una urbanización ubicada en el km 234 de la Panamericana Sur, cerca de importantes zonas turísticas como la bahía de Paracas y las playas de El Chaco.\n\nCuenta con lotes residenciales y comerciales, además de espacios como parques, áreas verdes y zonas recreativas.\n\nTe comparto nuestro brochure para que conozcas más sobre el proyecto y puedas evaluar si es lo que estás buscando. 📲'
+},
+meta: { text: '¡Hola, NOMBRE! 👋😊\n\n¡Gracias por tu interés en *Alameda de Paracas*! Hemos recibido tu solicitud de información y queremos ayudarte a conocer nuestro proyecto.\n\n📍 Contamos con lotes residenciales y comerciales desde 90 m², ubicados en el km 234 de la Panamericana Sur.\n\nCuéntame, ¿qué información te gustaría conocer?',
+opts: [{ label: 'Características', key: 'm_carac' }, { label: 'Precios y facilidades', key: 'm_precio' }, { label: 'Lotes disponibles', key: 'm_lotes' }, { label: 'Coordinar una visita', key: 'm_visita' }] },
+ubic: 'Alameda de Paracas está en el km 234 de la Panamericana Sur, a 5 minutos de las playas de Paracas y cerca de servicios y zonas comerciales. 📍\n\n[PIN DE UBICACIÓN]'
+},
+FDA: { name: 'Fundo de Asia', short: 'Fundo de Asia', row: 'Asia · lotes para casa de campo cerca del Boulevard', brochure: 'Brochure Fundo de Asia 2026.pdf',
+needs: [{ label: 'Casa de campo', k: 'campo', motivo: 'Casa de campo o segunda vivienda' }, { label: 'Para invertir', k: 'inv', motivo: 'Inversión' }, { label: 'Viendo opciones', k: 'ver', motivo: 'Está viendo opciones' }],
+texts: {
+campo: '¡Excelente elección! 🏡 Fundo de Asia es una alternativa para quienes buscan disfrutar de una casa de campo y compartir momentos especiales en familia, rodeados de naturaleza y exclusividad.\n\nEstá ubicado en el km 102 de la Panamericana Sur, a solo 10 minutos del Boulevard de Asia. Además, cuenta con espacios como Club House, piscinas, áreas deportivas, parque lineal, zona de parrillas y mucho más.\n\nTe comparto nuestro brochure para que conozcas todo lo que ofrece Fundo de Asia. 🌿',
+inv: '¡Excelente! 🙌 Fundo de Asia es una alternativa para quienes buscan invertir en una zona con potencial de crecimiento y desarrollo.\n\nEstá ubicado en el km 102 de la Panamericana Sur, a solo 10 minutos del Boulevard de Asia. Además, contará con el tren de cercanías Lima–Ica que impulsa el desarrollo y la valorización de la zona.\n\nTe comparto nuestro brochure para que conozcas más sobre el proyecto y sus beneficios. 📲',
+ver: '¡Perfecto! 😊 Fundo de Asia es un proyecto de lotes de campo ubicado en el km 102 de la Panamericana Sur, a 10 minutos del Boulevard de Asia.\n\nCuenta con diferentes espacios para disfrutar en familia, como Club House, piscinas, áreas deportivas, parque lineal, laguna artificial, zona de parrillas y más.\n\nTe comparto nuestro brochure para que conozcas el proyecto y puedas evaluar si se adapta a lo que estás buscando. 📲'
+},
+meta: { text: '¡Hola, NOMBRE! 👋😊\n\n¡Gracias por tu interés en *Fundo de Asia*! Hemos recibido tu solicitud de información a través de nuestra publicidad.\n\n🏡 Queremos ayudarte a conocer nuestro proyecto de lotes desde 200 m², ubicado en el km 102 de la Panamericana Sur, ideal para quienes buscan tener su propia casa de campo.\n\nCuéntame, ¿qué te gustaría conocer primero?',
+opts: [{ label: 'Características', key: 'm_carac' }, { label: 'Precios y facilidades', key: 'm_precio' }, { label: 'Ubicación y áreas', key: 'm_ubic' }, { label: 'Coordinar una visita', key: 'm_visita' }] },
+ubic: 'Fundo de Asia está en el km 102 de la Panamericana Sur, a 10 minutos del Boulevard de Asia. 📍 Tiene Club House, piscinas, áreas deportivas, parque lineal, laguna artificial y zona de parrillas.\n\n[PIN DE UBICACIÓN]'
+},
+CAB: { name: 'Caballerizas de San José II', short: 'Caballerizas San José II', row: 'El Carmen, Chincha · lotes para casa de campo desde 140 m²', brochure: 'Brochure Caballerizas de San José II 2026.pdf',
+needs: [{ label: 'Casa de campo', k: 'campo', motivo: 'Casa de campo o segunda vivienda' }, { label: 'Para invertir', k: 'inv', motivo: 'Inversión' }, { label: 'Viendo opciones', k: 'ver', motivo: 'Está viendo opciones' }],
+texts: {
+campo: '¡Excelente elección! 🏡 Caballerizas de San José II es ideal para quienes buscan disfrutar de una casa de campo, rodeados de naturaleza y en un ambiente pensado para compartir en familia.\n\nUbicado en El Carmen, Chincha, a solo 1 minuto de la Hacienda San José, cuenta con lotes desde 140 m² y espacios como Club House, piscinas, laguna, cancha de tenis, zona de parrillas y más.\n\nTe comparto nuestro brochure para que conozcas todo lo que ofrece el proyecto. 🌿',
+inv: '¡Excelente! 🙌 Caballerizas de San José II representa una alternativa para quienes buscan invertir en terrenos con potencial de valorización.\n\nEstá ubicado en El Carmen, Chincha, a solo 1 minuto de la Hacienda San José y cuenta con lotes desde 140 m². Además, ofrece beneficios como título de propiedad, servicios de luz y agua, y financiamiento directo.\n\nTe comparto nuestro brochure para que conozcas más sobre el proyecto y sus beneficios. 📲',
+ver: '¡Perfecto! 😊 Caballerizas de San José II es un condominio de campo ubicado en El Carmen, Chincha, a solo 1 minuto de la Hacienda San José.\n\nCuenta con lotes desde 140 m² y diferentes áreas comunes, como Club House, piscinas, laguna, cancha de tenis, gimnasio al aire libre y zona de parrillas.\n\nTe comparto nuestro brochure para que conozcas más sobre el proyecto y puedas evaluar si se adapta a lo que estás buscando. 📲'
+},
+meta: { text: '¡Hola, NOMBRE! 👋😊\n\n¡Gracias por tu interés en *Caballerizas de San José II*! Hemos recibido tu solicitud y queremos contarte más sobre nuestro proyecto.\n\n🌿 Un condominio de campo ubicado en El Carmen, Chincha, a solo 1 minuto de la Hacienda San José, con lotes desde 140 m² y espacios para disfrutar en familia.\n\nCuéntame, ¿qué te gustaría conocer primero?',
+opts: [{ label: 'Características y áreas', key: 'm_carac' }, { label: 'Precios y facilidades', key: 'm_precio' }, { label: 'Ubicación y cómo llegar', key: 'm_ubic' }, { label: 'Coordinar una visita', key: 'm_visita' }] },
+ubic: 'Caballerizas de San José II está en El Carmen, Chincha, a 1 minuto de la Hacienda San José. 📍\n\n[PIN DE UBICACIÓN Y CÓMO LLEGAR]'
+},
+YAK: { name: 'Yakuruma', short: 'Yakuruma', row: 'Puerto Maldonado · lotes para invertir en un condo hotel', brochure: 'Brochure Yakuruma 2026.pdf',
+needs: [{ label: 'Ver el condohotel', k: 'condo', motivo: 'Conocer el proyecto condohotel' }, { label: 'Para invertir', k: 'inv', motivo: 'Inversión' }, { label: 'Viendo opciones', k: 'ver', motivo: 'Está viendo opciones' }],
+texts: {
+condo: '¡Excelente elección! 🌿 Yakuruma es una propuesta única en Puerto Maldonado: un Luxury Condo Hotel que integra naturaleza, alojamiento y entretenimiento, con el primer Aquapark integrado a un desarrollo de lujo en la selva peruana.\n\nUbicado en el km 466 de la carretera Interoceánica, una vía estratégica que conecta Puerto Maldonado con Brasil y Bolivia.\n\nTe comparto nuestro brochure para que descubras todo lo que Yakuruma tiene para ofrecerte. 📲',
+inv: '¡Excelente! 🙌 Yakuruma te ofrece la oportunidad de invertir en una propiedad que puede generar ingresos a través de su incorporación al sistema de operación hotelera.\n\nAdquieres tu lote y bungalow, y puedes integrarlo a la administración hotelera para generar ingresos mediante alquileres. Además, su ubicación estratégica en la carretera Interoceánica conecta con Brasil y Bolivia, en una zona con gran atractivo turístico.\n\nTe comparto nuestro brochure para que conozcas cómo funciona este modelo de inversión. 📲',
+ver: '¡Perfecto! 😊 Yakuruma es un proyecto innovador en Puerto Maldonado que combina inversión inmobiliaria, turismo y entretenimiento.\n\nCuenta con una propuesta hotelera, bungalows, piscinas, restaurante, laguna y el primer Aquapark integrado a un desarrollo de lujo en la selva peruana.\n\nTe comparto nuestro brochure para que conozcas más sobre esta propuesta y evalúes su potencial. 📲'
+}
+}
 };
 }
 fresh(entry) {
-var firstMsg = { hola: 'Hola, quisiera información', fundo: 'Hola, quiero información de Fundo de Asia', promo: 'Hola, vi la promo en Instagram y quiero más información' }[entry];
-var proyecto = entry === 'fundo' ? 'Fundo de Asia' : (entry === 'promo' ? 'Alameda de Paracas' : '');
-var log = [
+var P = this.proj();
+var isMeta = entry.indexOf('meta') === 0;
+var code = { fundo: 'FDA', promo: 'PAR', metaFDA: 'FDA', metaPAR: 'PAR', metaCAB: 'CAB' }[entry] || '';
+var base = {
+entry: entry, phase: 'flow', showFlow: false, flowStep: 1, listOpen: false, reminded: false,
+form: { nombre: '', correo: '', doc: '', telefono: '', consent: false },
+ctx: { code: code, proyecto: code ? P[code].name : '', motivo: '', last: '', nombre: '', corto: 'María', tel: '+51 900 000 321' }
+};
+if (isMeta) {
+var m = P[code].meta;
+base.msgs = [
+{ who: 'note', text: 'Plantilla aprobada por Meta · enviada al recibir el lead' },
+{ who: 'bot', text: m.text.replace('NOMBRE', 'María') }
+];
+base.opts = { kind: 'buttons', items: m.opts };
+base.phase = 'meta';
+base.form = { nombre: 'María Torres', correo: 'maria.torres@correo.com', doc: '45678912', telefono: '+51 900 000 321', consent: true };
+base.ctx.nombre = 'María Torres';
+base.ctx.last = 'Formulario de Meta Ads';
+base.log = [
+{ tag: 'Meta Ads', text: 'Lead del formulario del anuncio de ' + P[code].name + ': María Torres · DNI 45678912 · +51 900 000 321 · maria.torres@correo.com.' },
+{ tag: 'CRM', text: 'El lead entra solo al CRM. Canal: Meta Ads · Medio: Formulario. Etapa: Nuevo.' },
+{ tag: 'Regla', text: 'No se vuelven a pedir datos: el formulario de Meta ya los trae.' },
+{ tag: 'Plantilla', text: 'Bienvenida personalizada con su nombre y el proyecto del anuncio.' }
+];
+base.contact = { nombre: 'María Torres', proyecto: P[code].name, motivo: '—', etapa: 'Nuevo' };
+return base;
+}
+var firstMsg = { hola: 'Hola, quisiera información', fundo: 'Hola, quiero información de Fundo de Asia', promo: 'Hola, vi la promo de Alameda de Paracas en Instagram' }[entry];
+base.ctx.last = firstMsg;
+base.msgs = [
+{ who: 'user', text: firstMsg },
+{ who: 'bot', text: '¡Hola María! 👋 Soy el asistente virtual de *GO HOUSE INMOBILIARIA* 🏡.\n\nPara atenderte mejor, compárteme tus datos a través del siguiente formulario. ¡Te tomará menos de un minuto! 😊' },
+{ who: 'flow', done: false }
+];
+base.opts = null;
+base.log = [
 { tag: 'Entrada', text: 'Mensaje de +51 900 000 321 por WhatsApp (nombre de perfil: María).' },
 { tag: 'Búsqueda', text: 'El número no existe en el CRM: se registra como lead nuevo. Etapa: Nuevo.' }
 ];
-if (entry === 'fundo') log.push({ tag: 'Proyecto', text: 'La IA detecta «Fundo de Asia» en el mensaje. No volverá a preguntar el proyecto.' });
-if (entry === 'promo') log.push({ tag: 'Proyecto', text: 'Origen identificado: publicación de Instagram «[NOMBRE DE LA PROMO]» → Alameda de Paracas. No volverá a preguntar el proyecto.' });
-log.push({ tag: 'Paso 1', text: 'Bienvenida automática con el botón del formulario (WhatsApp Flow).' });
-return {
-entry: entry,
-msgs: [
-{ who: 'user', text: firstMsg },
-{ who: 'bot', text: '¡Hola María! 👋 Soy el asistente virtual de GO HOUSE INMOBILIARIA 🏡.\n\nPara atenderte mejor, compárteme tus datos a través del siguiente formulario. ¡Te tomará menos de un minuto! 😊' },
-{ who: 'flow', done: false }
-],
-opts: null,
-phase: 'flow',
-log: log,
-showFlow: false,
-flowStep: 1,
-listOpen: false,
-reminded: false,
-form: { nombre: '', correo: '', doc: '', telefono: '', consent: false },
-contact: { nombre: 'María (perfil de WhatsApp)', proyecto: proyecto || '—', motivo: '—', etapa: 'Nuevo' },
-ctx: { proyecto: proyecto, motivo: '', last: firstMsg, nombre: '', corto: 'María', tel: '+51 900 000 321' }
-};
+if (entry === 'fundo') base.log.push({ tag: 'Proyecto', text: 'La IA detecta «Fundo de Asia» en el mensaje. No volverá a preguntar el proyecto.' });
+if (entry === 'promo') base.log.push({ tag: 'Proyecto', text: 'Origen identificado: promo de Alameda de Paracas en Instagram. No volverá a preguntar el proyecto.' });
+base.log.push({ tag: 'Paso 1', text: 'Bienvenida automática con el botón del formulario (WhatsApp Flow).' });
+base.contact = { nombre: 'María (perfil de WhatsApp)', proyecto: code ? P[code].name : '—', motivo: '—', etapa: 'Nuevo' };
+return base;
 }
 componentDidUpdate() {
 if (this.chatEl) this.chatEl.scrollTop = this.chatEl.scrollHeight;
@@ -235,61 +290,41 @@ if (userText) msgs.push({ who: 'user', text: userText });
 (bots || []).forEach(function (b) { msgs.push(typeof b === 'string' ? { who: 'bot', text: b } : b); });
 var ctx = Object.assign({}, s.ctx, ctxPatch || {});
 if (userText) ctx.last = userText;
-this.setState({
-msgs: msgs,
-opts: opts || null,
-phase: phase || s.phase,
-log: s.log.concat(logs || []),
-contact: Object.assign({}, s.contact, contactPatch || {}),
-ctx: ctx,
-listOpen: false
-});
+this.setState({ msgs: msgs, opts: opts || null, phase: phase || s.phase, log: s.log.concat(logs || []), contact: Object.assign({}, s.contact, contactPatch || {}), ctx: ctx, listOpen: false });
 }
 projectList(withAll) {
 var P = this.proj();
-var items = Object.keys(P).map(function (k) { return { label: P[k].short, desc: P[k].row, key: 'proj', val: k }; });
+var items = ['PAR', 'FDA', 'CAB', 'YAK'].map(function (k) { return { label: P[k].short, desc: P[k].row, key: 'proj', code: k }; });
 if (withAll) items.push({ label: 'Ver todos los proyectos', desc: 'Te muestro un resumen de cada uno', key: 'todos' });
 return { kind: 'list', button: 'Ver proyectos', items: items };
 }
-needList() {
-return { kind: 'list', button: 'Ver opciones', items: [
-{ label: 'Lote para mi casa', desc: 'Comprar un lote para construir mi casa', key: 'need', val: 'casa', motivo: 'Lote para su casa' },
-{ label: 'Casa de campo', desc: 'Tener una casa de campo o segunda vivienda', key: 'need', val: 'campo', motivo: 'Casa de campo o segunda vivienda' },
-{ label: 'Inversión', desc: 'Comprar para inversión', key: 'need', val: 'inversion', motivo: 'Inversión' },
-{ label: 'Conocer opciones', desc: 'Quiero conocer las opciones antes de decidir', key: 'need', val: 'opciones', motivo: 'Explorando opciones' }
-] };
+needOpts(code) {
+return { kind: 'buttons', items: this.proj()[code].needs.map(function (n) { return { label: n.label, key: 'need', k: n.k, motivo: n.motivo }; }) };
 }
+needText() { return '¡Excelente elección! 🙌 Para brindarte información más precisa, quisiera saber:\n\n*¿Qué estás buscando actualmente?*'; }
 invite() {
-return { kind: 'buttons', items: [
-{ label: 'Visita presencial', key: 'presencial' },
-{ label: 'Asesoría virtual', key: 'virtual' },
-{ label: 'Prefiero una llamada', key: 'llamada' }
-] };
+return { kind: 'buttons', items: [{ label: 'Visita presencial', key: 'presencial' }, { label: 'Asesoría virtual', key: 'virtual' }, { label: 'Prefiero una llamada', key: 'llamada' }] };
 }
-inviteText(P) {
-return '¡' + this.nm() + ', me encantaría que puedas conocer más de cerca ' + P + '! 😊\n\nPodemos coordinar una atención personalizada para que conozcas el proyecto, sus características y las opciones disponibles.\n\n¿Cómo te gustaría conocerlo?';
-}
+inviteText(P) { return '¡Y sería increíble que puedas conocer ' + P + ' de cerca! 😊\n\nPodemos coordinar una atención personalizada para ti.\n\n*¿Cómo te gustaría conocerlo?*'; }
+brochure(code) { return { who: 'doc', text: this.proj()[code].brochure, meta: 'PDF · brochure del proyecto' }; }
 summary(last) {
 var c = this.state.ctx;
 return 'Resumen enviado al asesor:\nNombre: ' + (c.nombre || 'María') + '\nContacto: ' + (c.tel || '+51 900 000 321') + '\nProyecto: ' + (c.proyecto || 'Por definir') + '\nMotivo de compra: ' + (c.motivo || 'No indicado') + '\nPresupuesto o inicial: No indicado\nTiempo estimado de compra: No indicado\nÚltima consulta: ' + (last || c.last);
 }
 derive(userText, botText, reason) {
 this.push(userText, [botText, { who: 'note', text: 'Conversación derivada a [NOMBRE DEL ASESOR]' }],
-[{ tag: 'Derivación', text: 'Motivo: ' + reason + '.' },
-{ tag: 'Asesor', text: this.summary(userText) },
-{ tag: 'CRM', text: 'Conversación asignada al asesor con todo el historial. Etapa: Derivado a asesor.' }],
+[{ tag: 'Derivación', text: 'Motivo: ' + reason + '.' }, { tag: 'Asesor', text: this.summary(userText) }, { tag: 'CRM', text: 'Conversación asignada al asesor con todo el historial. Etapa: Derivado a asesor.' }],
 null, 'derivado', { etapa: 'Derivado a asesor' });
 }
 confirm(userText, fecha, hora, extra) {
 var c = this.state.ctx, n = this.nm();
-var bots = ['¡Tu cita ha sido registrada, ' + n + '! 🎉\n\nDetalles de tu atención:\n\n📍 Proyecto: ' + c.proyecto + '\n📅 Fecha: ' + fecha + '\n🕒 Hora: ' + hora + '\n👤 Modalidad: ' + c.modalidad + '\n\nUn asesor de Go House estará preparado para atenderte.\n\n¡Te esperamos!'];
-if (c.modalidad === 'Asesoría virtual') bots.push('Te enviaremos el enlace de la reunión un día antes. 💻');
+var txt = '¡Tu cita ha sido registrada, ' + n + '! 🎉\n\n*Detalles de tu atención:*\n\n📍 Proyecto: ' + c.proyecto + '\n📅 Fecha: ' + fecha + '\n🕒 Hora: ' + hora + '\n👤 Modalidad: ' + c.modalidad + '\n\nUn asesor de Go House estará preparado para atenderte.\n\n¡Te esperamos!';
 var logs = (extra || []).concat([
 { tag: 'Paso 7 · Cita', text: 'Cita registrada en el CRM: ' + c.proyecto + ' · ' + fecha + ' · ' + hora + ' · ' + c.modalidad + '. Asignada a [NOMBRE DEL ASESOR].' },
-{ tag: 'Recordatorio', text: 'Recordatorio por WhatsApp programado 24 h antes de la cita.' },
+{ tag: 'Recordatorio', text: 'Recordatorio por WhatsApp programado antes de la cita.' },
 { tag: 'Asesor', text: this.summary(userText) }
 ]);
-this.push(userText, bots, logs, null, 'done', { etapa: 'Cita agendada' });
+this.push(userText, [txt], logs, null, 'done', { etapa: 'Cita agendada' });
 }
 submitFlow() {
 var s = this.state, f = s.form;
@@ -299,109 +334,104 @@ var doc = (f.doc || '').trim() || '45678912';
 var correo = (f.correo || '').trim() || 'maria.torres@correo.com';
 var tel = (f.telefono || '').trim() || '+51 900 000 321';
 var corto = full.split(' ')[0];
-var P = s.ctx.proyecto;
+var code = s.ctx.code;
 var msgs = s.msgs.map(function (m) { return m.who === 'flow' ? Object.assign({}, m, { done: true }) : m; });
 var opts, phase;
 var logs = [
-{ tag: 'Paso 2 · Registro', text: 'Datos del Flow guardados: ' + full + ' · DNI ' + doc + ' · ' + correo + ' · ' + tel + '. Etapa: Registrado.' },
+{ tag: 'Paso 2 · Registro', text: 'Datos del Flow guardados: ' + full + ' · DNI ' + doc + ' · ' + tel + ' · ' + correo + '. Etapa: Registrado.' },
 { tag: 'Clasificación', text: 'Canal de entrada: WhatsApp · Medio de captación: ' + (s.entry === 'promo' ? 'Redes sociales (promo)' : 'Orgánico') + '.' },
 { tag: 'Consentimiento', text: 'Autorización de datos personales: Sí, con fecha y hora guardadas.' }
 ];
-if (P) {
-msgs.push({ who: 'bot', text: '¡Muchas gracias por registrarte, ' + corto + '! 😊\n\nVeo que te interesa ' + P + '. ¡Excelente elección! 🙌 Para brindarte información más precisa, quisiera saber:\n\n¿Qué estás buscando actualmente?' });
-opts = this.needList(); phase = 'necesidad';
+if (code) {
+msgs.push({ who: 'bot', text: '¡Muchas gracias por registrarte, ' + corto + '! 😊\n\nVeo que te interesa ' + this.proj()[code].name + '. ' + this.needText() });
+opts = this.needOpts(code); phase = 'necesidad';
 logs.push({ tag: 'Paso 3', text: 'Proyecto ya conocido: se salta la pregunta y pasa a la necesidad.' });
 } else {
-msgs.push({ who: 'bot', text: '¡Muchas gracias por registrarte, ' + corto + '! 😊\n\nEstamos listos para ayudarte a encontrar el proyecto que mejor se adapte a lo que buscas. Para comenzar, cuéntame:\n\n¿Qué proyecto de Go House te interesa conocer?' });
+msgs.push({ who: 'bot', text: '¡Muchas gracias por registrarte, ' + corto + '! 😊\n\nEstamos listos para ayudarte a encontrar el proyecto que mejor se adapte a lo que buscas. Para comenzar, cuéntame:\n\n*¿Qué proyecto de Go House te interesa conocer?*' });
 opts = this.projectList(true); phase = 'proyecto';
 }
-this.setState({
-msgs: msgs, showFlow: false, flowStep: 1, opts: opts, phase: phase,
+this.setState({ msgs: msgs, showFlow: false, flowStep: 1, opts: opts, phase: phase,
 form: Object.assign({}, f, { nombre: full, doc: doc, correo: correo, telefono: tel }),
 log: s.log.concat(logs),
 contact: Object.assign({}, s.contact, { nombre: full, etapa: 'Registrado' }),
-ctx: Object.assign({}, s.ctx, { nombre: full, corto: corto, tel: tel })
-});
+ctx: Object.assign({}, s.ctx, { nombre: full, corto: corto, tel: tel }) });
 }
 choose(o) {
-var s = this.state, c = s.ctx, n = this.nm(), L = o.label;
-var P = c.proyecto;
+var s = this.state, c = s.ctx, L = o.label, Pj = this.proj();
+var P = c.proyecto, code = c.code;
 switch (o.key) {
 case 'proj':
-return this.push(L, ['¡Excelente elección! 🙌 Para brindarte información más precisa, quisiera saber:\n\n¿Qué estás buscando actualmente?'],
-[{ tag: 'Paso 3 · Proyecto', text: 'Proyecto de interés: ' + o.val + '. Etapa: Interesado.' }],
-this.needList(), 'necesidad', { proyecto: o.val, etapa: 'Interesado' }, { proyecto: o.val });
+return this.push(L, [this.needText()], [{ tag: 'Paso 3 · Proyecto', text: 'Proyecto de interés: ' + Pj[o.code].name + '. Etapa: Interesado.' }],
+this.needOpts(o.code), 'necesidad', { proyecto: Pj[o.code].name, etapa: 'Interesado' }, { proyecto: Pj[o.code].name, code: o.code });
 case 'todos':
-return this.push(L, ['¡Claro! Estos son nuestros proyectos:\n\n• Alameda de Paracas: entre la antigua y la nueva Panamericana Sur, con lotes residenciales y comerciales.\n• Fundo de Asia: a pocos minutos del Boulevard de Asia, ideal como casa de campo o segunda vivienda.\n• Caballerizas de San José II: en El Carmen, Chincha, con lotes desde 300 m² y áreas comunes.\n• Yakuruma: [DESCRIPCIÓN BREVE].', '¿Cuál te gustaría conocer más a fondo?'],
-[{ tag: 'Paso 3', text: 'Pidió ver todos: se envía un resumen y se le pide elegir uno.' }],
-this.projectList(false), 'proyecto');
+return this.push(L, ['¡Claro! Estos son nuestros proyectos:\n\n• *Alameda de Paracas:* km 234 de la Panamericana Sur, con lotes residenciales y comerciales desde 90 m².\n• *Fundo de Asia:* km 102 de la Panamericana Sur, a 10 minutos del Boulevard de Asia, con lotes de campo desde 200 m².\n• *Caballerizas de San José II:* El Carmen, Chincha, a 1 minuto de la Hacienda San José, con lotes desde 140 m².\n• *Yakuruma:* Luxury Condo Hotel en Puerto Maldonado, km 466 de la Interoceánica, con lotes desde 200 m².', '*¿Cuál te gustaría conocer más a fondo?*'],
+[{ tag: 'Paso 3', text: 'Pidió ver todos: se envía un resumen y se le pide elegir uno.' }], this.projectList(false), 'proyecto');
 case 'need':
-var info = this.proj()[P];
-var intro = {
-casa: 'Para construir tu casa, te cuento lo principal de ' + P + ':',
-campo: 'Para tu casa de campo o segunda vivienda, ' + P + ' es una gran opción. Te cuento lo principal:',
-inversion: 'Como inversión, esto es lo principal que debes saber de ' + P + ':',
-opciones: '¡Perfecto! Te cuento lo principal de ' + P + ' para que compares con calma:'
-}[o.val];
-return this.push(L, [intro,
-{ who: 'card', title: P, sub: info.zona, text: info.desc + '\n\nÁreas: [XX] a [XX] m²\nPrecio desde: [PRECIO]\nFacilidades: inicial desde [MONTO] y cuotas hasta [N] meses' },
-this.inviteText(P)],
+return this.push(L, [Pj[code].texts[o.k], this.brochure(code), this.inviteText(P)],
 [{ tag: 'Paso 4 · Necesidad', text: 'Motivo de compra: ' + o.motivo + '.' },
-{ tag: 'Paso 5 · Presentación', text: 'Se envía la ficha de ' + P + ' (ubicación, características, precios y facilidades) adaptada a su motivo.' },
+{ tag: 'Paso 5 · Presentación', text: 'Texto de ' + P + ' para «' + L + '» + brochure.' },
 { tag: 'Paso 6', text: 'Invitación a una cita: presencial, virtual o llamada.' }],
 this.invite(), 'invite', { motivo: o.motivo, etapa: 'Interesado' }, { motivo: o.motivo });
-case 'agendar':
-return this.push(L, [this.inviteText(P)], [], this.invite(), 'invite');
+case 'm_carac':
+var k0 = Pj[code].needs[2].k;
+return this.push(L, [Pj[code].texts[k0], this.brochure(code), this.inviteText(P)],
+[{ tag: 'Meta Ads', text: 'Eligió «' + L + '»: presentación del proyecto + brochure. Etapa: Interesado.' }],
+this.invite(), 'invite', { etapa: 'Interesado' });
+case 'm_ubic':
+return this.push(L, [Pj[code].ubic, this.inviteText(P)],
+[{ tag: 'Meta Ads', text: 'Eligió «' + L + '»: ubicación + invitación a la cita.' }], this.invite(), 'invite', { etapa: 'Interesado' });
+case 'm_precio':
+return this.push(L, ['¡Buena pregunta! Los precios y las facilidades de compra te los da un asesor con la información actualizada. 😊\n\n*¿Cómo te gustaría conocer ' + P + '?*'],
+[{ tag: 'Regla', text: 'Pidió precios: la IA no da montos y propone la cita o la llamada con un asesor.' }], this.invite(), 'invite', { etapa: 'Interesado' });
+case 'm_lotes':
+return this.derive(L, 'La disponibilidad de lotes la confirma un asesor en tiempo real. Te comunico con él ahora mismo; ya le compartí tu información para que no tengas que repetirla. 😊', 'pidió lotes disponibles');
+case 'm_visita':
+return this.push(L, ['¡Excelente! 🏡 Será una buena oportunidad para conocer el proyecto y resolver tus dudas.\n\n*¿Qué día te gustaría realizar tu visita?*'],
+[{ tag: 'Meta Ads', text: 'Eligió «Coordinar una visita»: pasa directo al agendamiento.' }, { tag: 'Calendario', text: 'Se consultan las fechas con cupo para visitas a ' + P + '.' }],
+this.dates(), 'fecha', { etapa: 'Interesado' }, { modalidad: 'Visita presencial' });
 case 'presencial':
-return this.push(L, ['¡Excelente! 🏡 Será una buena oportunidad para conocer el proyecto y resolver tus dudas.\n\n¿Qué día te gustaría realizar tu visita?'],
-[{ tag: 'Calendario', text: 'Se consultan las fechas con cupo para visitas a ' + P + '.' }],
-{ kind: 'buttons', items: [
-{ label: 'Sáb 7 de noviembre', key: 'fecha' },
-{ label: 'Dom 8 de noviembre', key: 'fecha' },
-{ label: 'Sáb 14 de noviembre', key: 'fecha' }
-] }, 'fecha', null, { modalidad: 'Visita presencial' });
+return this.push(L, ['¡Excelente! 🏡 Será una buena oportunidad para conocer el proyecto y resolver tus dudas.\n\n*¿Qué día te gustaría realizar tu visita?*'],
+[{ tag: 'Calendario', text: 'Se consultan las fechas con cupo para visitas a ' + P + '.' }], this.dates(), 'fecha', null, { modalidad: 'Visita presencial' });
 case 'fecha':
-return this.push(L, ['¡Perfecto! ¿En qué horario te gustaría asistir?'], [],
-{ kind: 'buttons', items: [
-{ label: '9:00 a. m.', key: 'hora' },
-{ label: '11:00 a. m.', key: 'hora' },
-{ label: '3:00 p. m.', key: 'hora' }
-] }, 'hora', null, { fecha: L });
+return this.push(L, ['*¡Perfecto! ¿En qué horario te gustaría asistir?*'], [],
+{ kind: 'buttons', items: [{ label: '9:00 a. m.', key: 'hora' }, { label: '11:00 a. m.', key: 'hora' }, { label: '3:00 p. m.', key: 'hora' }] }, 'hora', null, { fecha: L });
 case 'hora':
 return this.confirm(L, c.fecha, L);
 case 'virtual':
-return this.push(L, ['¡Claro que sí! Podemos coordinar una asesoría virtual para explicarte los detalles del proyecto y resolver todas tus consultas.\n\n¿Qué día y horario te acomodaría mejor?'],
+return this.push(L, ['¡Claro que sí! Podemos coordinar una asesoría virtual para explicarte los detalles del proyecto y resolver todas tus consultas.\n\n*¿Qué día y horario te acomodaría mejor?*'],
 [{ tag: 'Calendario', text: 'Se consultan los horarios libres de los asesores para asesorías virtuales.' }],
 { kind: 'list', button: 'Ver horarios', items: [
-{ label: 'Lun 9 nov · 6:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Lunes 9 de noviembre', h: '6:00 p. m.' },
-{ label: 'Mar 10 nov · 7:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Martes 10 de noviembre', h: '7:00 p. m.' },
-{ label: 'Mié 11 nov · 12:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Miércoles 11 de noviembre', h: '12:00 p. m.' },
+{ label: 'Mar 10 nov · 6:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Martes 10 de noviembre', h: '6:00 p. m.' },
+{ label: 'Mié 11 nov · 7:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Miércoles 11 de noviembre', h: '7:00 p. m.' },
+{ label: 'Jue 12 nov · 12:00 p. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Jueves 12 de noviembre', h: '12:00 p. m.' },
 { label: 'Sáb 14 nov · 10:00 a. m.', desc: 'Videollamada de 30 minutos', key: 'slotv', f: 'Sábado 14 de noviembre', h: '10:00 a. m.' }
 ] }, 'virtual', null, { modalidad: 'Asesoría virtual' });
 case 'slotv':
 return this.confirm(L, o.f, o.h);
 case 'llamada':
-return this.push(L, ['¡Perfecto! ¿En qué horario prefieres que te llamemos?'], [],
+return this.push(L, ['¡Perfecto! *¿En qué horario prefieres que te llamemos?*'], [],
 { kind: 'buttons', items: [
-{ label: 'Hoy, en la tarde', key: 'slotl', f: 'Hoy, jueves 5 de noviembre', h: 'Entre 3:00 y 6:00 p. m.' },
-{ label: 'Mañana en la mañana', key: 'slotl', f: 'Viernes 6 de noviembre', h: 'Entre 9:00 a. m. y 12:00 p. m.' },
-{ label: 'Mañana en la tarde', key: 'slotl', f: 'Viernes 6 de noviembre', h: 'Entre 3:00 y 6:00 p. m.' }
+{ label: 'Hoy, en la tarde', key: 'slotl', f: 'Hoy, lunes 9 de noviembre', h: 'Entre 3:00 y 6:00 p. m.' },
+{ label: 'Mañana en la mañana', key: 'slotl', f: 'Martes 10 de noviembre', h: 'Entre 9:00 a. m. y 12:00 p. m.' },
+{ label: 'Mañana en la tarde', key: 'slotl', f: 'Martes 10 de noviembre', h: 'Entre 3:00 y 6:00 p. m.' }
 ] }, 'llamada', null, { modalidad: 'Llamada telefónica' });
 case 'slotl':
 return this.confirm(L, o.f, o.h, [{ tag: 'Disponibilidad', text: 'El asesor [NOMBRE] tiene espacio en ese horario: se programa la llamada.' }]);
 case 'info':
-return this.push(L, [{ who: 'doc', text: 'Brochure ' + P + '.pdf', meta: 'Planos, áreas y facilidades de pago · PDF' }, 'Aquí tienes el brochure de ' + P + '. 😊 Y cuando quieras, puedes conocerlo en persona. ¿Cómo te gustaría hacerlo?'],
-[{ tag: 'Seguimiento', text: 'Se envía información adicional y se vuelve a proponer la cita.' }],
-this.invite(), 'invite');
+return this.push(L, [this.brochure(code), 'Aquí tienes nuevamente el brochure de ' + P + ', con más detalle del proyecto. 😊', this.inviteText(P)],
+[{ tag: 'Seguimiento', text: 'Se envía información adicional y se vuelve a proponer la cita.' }], this.invite(), 'invite');
+case 'agendar':
+return this.push(L, [this.inviteText(P)], [], this.invite(), 'invite');
 case 'noGracias':
-return this.push(L, ['¡Perfecto, ' + n + '! Quedo atento por aquí. Si te surge cualquier duda sobre ' + P + ', escríbeme. 😊'],
-[{ tag: 'Seguimiento', text: 'Se programa un mensaje en [X] días con información nueva del proyecto, sin repetir lo ya enviado.' }],
-null, 'evaluando', { etapa: 'Evaluando' });
+return this.push(L, ['¡Perfecto, ' + this.nm() + '! Quedo atento por aquí. Si te surge cualquier duda sobre ' + P + ', escríbeme. 😊'],
+[{ tag: 'Seguimiento', text: 'Se programa un mensaje en [X] días con información nueva del proyecto, sin repetir lo ya enviado.' }], null, 'evaluando', { etapa: 'Evaluando' });
 case 'escribeme':
 return this.push(L, ['¡Perfecto! Te escribo mañana para coordinar tu visita. 🙌'],
-[{ tag: 'Seguimiento', text: 'Se programa retomar la coordinación de la visita mañana.' }],
-null, 'evaluando', { etapa: 'Por agendar' });
+[{ tag: 'Seguimiento', text: 'Se programa retomar la coordinación de la visita mañana.' }], null, 'evaluando', { etapa: 'Por agendar' });
 }
+}
+dates() {
+return { kind: 'buttons', items: [{ label: 'Sáb 14 de noviembre', key: 'fecha' }, { label: 'Dom 15 de noviembre', key: 'fecha' }, { label: 'Sáb 21 de noviembre', key: 'fecha' }] };
 }
 sims() {
 var s = this.state, self = this, n = this.nm(), P = s.ctx.proyecto;
@@ -415,32 +445,31 @@ self.setState({ msgs: msgs, reminded: true, log: s.log.concat([{ tag: 'Paso 8 ·
 } }];
 case 'proyecto':
 return [{ label: 'No indica proyecto', run: function () {
-self.push(null, [{ who: 'note', text: '[X] horas después' }, n + ', para enviarte la información correcta, ¿qué proyecto te gustaría conocer? 😊'],
-[{ tag: 'Paso 8 · Seguimiento', text: 'Completó sus datos pero no eligió proyecto: se le vuelve a preguntar.' }],
-self.projectList(true), 'proyecto');
+self.push(null, [{ who: 'note', text: '[X] horas después' }, n + ', para enviarte la información correcta, *¿qué proyecto te gustaría conocer?* 😊'],
+[{ tag: 'Paso 8 · Seguimiento', text: 'Completó sus datos pero no eligió proyecto: se le vuelve a preguntar.' }], self.projectList(true), 'proyecto');
 } }, asesor];
+case 'meta':
 case 'necesidad':
 return [asesor];
 case 'invite':
 return [
 { label: 'Pregunta precios y no agenda', run: function () {
-self.push('¿Cuánto cuesta el lote más económico?', ['Los lotes de ' + P + ' tienen precios desde [PRECIO], con una inicial desde [MONTO] y cuotas de hasta [N] meses. 😊\n\nLo ideal es que lo conozcas en persona para elegir la ubicación que más te guste. ¿Cómo te gustaría conocerlo?'],
-[{ tag: 'Paso 8 · Seguimiento', text: 'Consultó precios: la IA resuelve la duda y vuelve a proponer la cita.' }],
-self.invite(), 'invite');
+self.push('¿Cuánto cuesta el lote más económico?', ['¡Buena pregunta! Los precios y las facilidades de pago te los da un asesor con la información actualizada. 😊\n\n¿Te gustaría una llamada o prefieres conocer el proyecto?'],
+[{ tag: 'Regla', text: 'Consultó precios: la IA no da montos y propone la llamada o la visita con un asesor.' }], self.invite(), 'invite');
 } },
 { label: 'Dice «Lo voy a evaluar»', run: function () {
-self.push('Gracias, lo voy a evaluar', ['¡Claro, ' + n + '! Tómate tu tiempo. 😊 ¿Te gustaría que te envíe información adicional, como el brochure con planos y facilidades de pago?'],
+self.push('Gracias, lo voy a evaluar', ['¡Claro, ' + n + '! Tómate tu tiempo. 😊 ¿Te gustaría que te envíe información adicional del proyecto?'],
 [{ tag: 'Paso 8 · Seguimiento', text: 'Dice que lo evaluará: se ofrece información adicional sin insistir.' }],
 { kind: 'buttons', items: [{ label: 'Sí, envíame info', key: 'info' }, { label: 'Agendar una cita', key: 'agendar' }, { label: 'No, gracias', key: 'noGracias' }] }, 'evaluar');
 } },
 { label: 'Pregunta por un lote específico', run: function () {
-self.derive('¿Tienen disponible un lote en esquina de 300 m²?', 'Buena pregunta, ' + n + '. La disponibilidad de cada lote la confirma un asesor en tiempo real, así que te comunico con él ahora mismo. Ya le compartí tu información para que no tengas que repetirla. 😊', 'pidió disponibilidad de un lote específico');
+self.derive('¿Tienen disponible un lote en esquina?', 'Buena pregunta, ' + n + '. La disponibilidad de cada lote la confirma un asesor en tiempo real, así que te comunico con él ahora mismo. Ya le compartí tu información para que no tengas que repetirla. 😊', 'pidió disponibilidad de un lote específico');
 } },
 asesor];
 case 'fecha':
 case 'hora':
 return [{ label: 'No define la fecha', run: function () {
-self.push('Todavía no sé qué día podría ir', ['¡No te preocupes, ' + n + '! ¿Te escribo mañana para coordinar la fecha de tu visita? Así lo vemos con calma. 😊'],
+self.push('Todavía no sé qué día podría ir', ['¡No te preocupes, ' + n + '! ¿Te escribo mañana para coordinar la fecha de tu visita? 😊'],
 [{ tag: 'Paso 8 · Seguimiento', text: 'Quiere visitar pero no define fecha: se ofrece retomar la coordinación.' }],
 { kind: 'buttons', items: [{ label: 'Sí, escríbeme', key: 'escribeme' }, { label: 'Ver fechas de nuevo', key: 'presencial' }] }, 'fecha');
 } }, asesor];
@@ -452,13 +481,14 @@ return [asesor];
 }
 return [];
 }
+parts(t) {
+return (t || '').split('*').map(function (seg, i) { return { t: seg, b: i % 2 === 1, n: i % 2 === 0 }; }).filter(function (p) { return p.t.length > 0; });
+}
 renderVals() {
-var self = this, s = this.state;
-var o = s.opts;
+var self = this, s = this.state, o = s.opts;
 var entries = [
-{ key: 'hola', label: 'Escribe «Hola»' },
-{ key: 'fundo', label: 'Escribe «Fundo de Asia»' },
-{ key: 'promo', label: 'Viene de una promo' }
+{ key: 'hola', label: 'Escribe «Hola»' }, { key: 'fundo', label: 'Escribe «Fundo de Asia»' }, { key: 'promo', label: 'Promo de Paracas' },
+{ key: 'metaFDA', label: 'Meta · Fundo de Asia' }, { key: 'metaPAR', label: 'Meta · Paracas' }, { key: 'metaCAB', label: 'Meta · Caballerizas' }
 ].map(function (e) {
 var on = s.entry === e.key;
 return { label: e.label, on: on ? 'true' : 'false', bg: on ? '#C8133B' : '#FFFFFF', color: on ? '#FFFFFF' : '#111111', border: on ? '#C8133B' : '#C9CACC', pick: function () { self.setState(self.fresh(e.key)); } };
@@ -467,7 +497,7 @@ var sims = this.sims();
 return {
 msgs: s.msgs.map(function (m) {
 return {
-text: m.text || '', title: m.title || '', sub: m.sub || '', meta: m.meta || '',
+text: m.text || '', parts: self.parts(m.text), title: m.title || '', sub: m.sub || '', meta: m.meta || '',
 isUser: m.who === 'user', isBot: m.who === 'bot', isCard: m.who === 'card', isDoc: m.who === 'doc', isNote: m.who === 'note',
 flowPending: m.who === 'flow' && !m.done, flowDone: m.who === 'flow' && !!m.done,
 open: function () { self.setState({ showFlow: true, flowStep: 1 }); }
