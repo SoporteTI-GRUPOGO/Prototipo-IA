@@ -66,6 +66,9 @@ a{color:#C8133B}a:hover{color:#A50F31}
 <button onClick="{{openList}}" style="width: 100%; min-height: 44px; padding: 8px 12px; border: 0; border-radius: 10px; background: #FFFFFF; color: #117A42; font: inherit; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: #117A42; stroke-width: 2; stroke-linecap: round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"></path></svg>{{listButton}}</button>
 </div>
 </sc-if>
+<sc-if value="{{showHint}}" hint-placeholder-val="{{false}}">
+<div style="align-self: flex-start; padding: 0 4px; font-size: 12px; line-height: 16px; color: #5F6164">Escribe «menú» para ver otros proyectos</div>
+</sc-if>
 </div>
 <div style="height: 60px; flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 0 12px; border-top: 1px solid #DEDFE0">
 <label for="msgPiloto" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Mensaje</label>
@@ -192,6 +195,7 @@ ver: '¡Perfecto! 😊 Alameda de Paracas es una urbanización ubicada en el km 
 },
 meta: { text: '¡Hola, NOMBRE! 👋😊\n\n¡Gracias por tu interés en *Alameda de Paracas*! Hemos recibido tu solicitud de información y queremos ayudarte a conocer nuestro proyecto.\n\n📍 Contamos con lotes residenciales y comerciales desde 90 m², ubicados en el km 234 de la Panamericana Sur.\n\nCuéntame, ¿qué información te gustaría conocer?',
 opts: [{ label: 'Características', key: 'm_carac' }, { label: 'Precios y facilidades', key: 'm_precio' }, { label: 'Lotes disponibles', key: 'm_lotes' }, { label: 'Coordinar una visita', key: 'm_visita' }] },
+faq: 'Alameda de Paracas cuenta con parques, áreas verdes, juegos para niños, pistas y veredas. La piscina no figura entre sus áreas comunes; si quieres, un asesor te confirma el detalle. 😊',
 ubic: 'Alameda de Paracas está en el km 234 de la Panamericana Sur, a 5 minutos de las playas de Paracas y cerca de servicios y zonas comerciales. 📍\n\n[PIN DE UBICACIÓN]'
 },
 FDA: { name: 'Fundo de Asia', short: 'Fundo de Asia', row: 'Asia · lotes para casa de campo cerca del Boulevard', brochure: 'Brochure Fundo de Asia 2026.pdf',
@@ -203,6 +207,7 @@ ver: '¡Perfecto! 😊 Fundo de Asia es un proyecto de lotes de campo ubicado en
 },
 meta: { text: '¡Hola, NOMBRE! 👋😊\n\n¡Gracias por tu interés en *Fundo de Asia*! Hemos recibido tu solicitud de información a través de nuestra publicidad.\n\n🏡 Queremos ayudarte a conocer nuestro proyecto de lotes desde 200 m², ubicado en el km 102 de la Panamericana Sur, ideal para quienes buscan tener su propia casa de campo.\n\nCuéntame, ¿qué te gustaría conocer primero?',
 opts: [{ label: 'Características', key: 'm_carac' }, { label: 'Precios y facilidades', key: 'm_precio' }, { label: 'Ubicación y áreas', key: 'm_ubic' }, { label: 'Coordinar una visita', key: 'm_visita' }] },
+faq: '¡Sí! 😊 Fundo de Asia cuenta con piscinas, además de Club House, áreas deportivas, parque lineal, laguna artificial y zona de parrillas.',
 ubic: 'Fundo de Asia está en el km 102 de la Panamericana Sur, a 10 minutos del Boulevard de Asia. 📍 Tiene Club House, piscinas, áreas deportivas, parque lineal, laguna artificial y zona de parrillas.\n\n[PIN DE UBICACIÓN]'
 },
 CAB: { name: 'Caballerizas de San José II', short: 'Caballerizas San José II', row: 'El Carmen, Chincha · lotes para casa de campo desde 140 m²', brochure: 'Brochure Caballerizas de San José II 2026.pdf',
@@ -214,9 +219,10 @@ ver: '¡Perfecto! 😊 Caballerizas de San José II es un condominio de campo ub
 },
 meta: { text: '¡Hola, NOMBRE! 👋😊\n\n¡Gracias por tu interés en *Caballerizas de San José II*! Hemos recibido tu solicitud y queremos contarte más sobre nuestro proyecto.\n\n🌿 Un condominio de campo ubicado en El Carmen, Chincha, a solo 1 minuto de la Hacienda San José, con lotes desde 140 m² y espacios para disfrutar en familia.\n\nCuéntame, ¿qué te gustaría conocer primero?',
 opts: [{ label: 'Características y áreas', key: 'm_carac' }, { label: 'Precios y facilidades', key: 'm_precio' }, { label: 'Ubicación y cómo llegar', key: 'm_ubic' }, { label: 'Coordinar una visita', key: 'm_visita' }] },
+faq: '¡Sí! 😊 Caballerizas de San José II tiene piscinas, Club House, laguna, cancha de tenis, gimnasio al aire libre y zona de parrillas.',
 ubic: 'Caballerizas de San José II está en El Carmen, Chincha, a 1 minuto de la Hacienda San José. 📍\n\n[PIN DE UBICACIÓN Y CÓMO LLEGAR]'
 },
-YAK: { name: 'Yakuruma', short: 'Yakuruma', row: 'Puerto Maldonado · lotes para invertir en un condo hotel', brochure: 'Brochure Yakuruma 2026.pdf',
+YAK: { name: 'Yakuruma', faq: '¡Sí! 😊 Yakuruma cuenta con piscinas, además de restaurante, laguna y el primer Aquapark integrado a un desarrollo de lujo en la selva peruana.', short: 'Yakuruma', row: 'Puerto Maldonado · lotes para invertir en un condo hotel', brochure: 'Brochure Yakuruma 2026.pdf',
 needs: [{ label: 'Ver el condohotel', k: 'condo', motivo: 'Conocer el proyecto condohotel' }, { label: 'Para invertir', k: 'inv', motivo: 'Inversión' }, { label: 'Viendo opciones', k: 'ver', motivo: 'Está viendo opciones' }],
 texts: {
 condo: '¡Excelente elección! 🌿 Yakuruma es una propuesta única en Puerto Maldonado: un Luxury Condo Hotel que integra naturaleza, alojamiento y entretenimiento, con el primer Aquapark integrado a un desarrollo de lujo en la selva peruana.\n\nUbicado en el km 466 de la carretera Interoceánica, una vía estratégica que conecta Puerto Maldonado con Brasil y Bolivia.\n\nTe comparto nuestro brochure para que descubras todo lo que Yakuruma tiene para ofrecerte. 📲',
@@ -243,6 +249,7 @@ base.msgs = [
 ];
 base.opts = { kind: 'buttons', items: m.opts };
 base.phase = 'meta';
+base.q = 'Cuéntame, *¿qué te gustaría conocer primero?*';
 base.form = { nombre: 'María Torres', correo: 'maria.torres@correo.com', doc: '45678912', telefono: '+51 900 000 321', consent: true };
 base.ctx.nombre = 'María Torres';
 base.ctx.last = 'Formulario de Meta Ads';
@@ -290,7 +297,9 @@ if (userText) msgs.push({ who: 'user', text: userText });
 (bots || []).forEach(function (b) { msgs.push(typeof b === 'string' ? { who: 'bot', text: b } : b); });
 var ctx = Object.assign({}, s.ctx, ctxPatch || {});
 if (userText) ctx.last = userText;
-this.setState({ msgs: msgs, opts: opts || null, phase: phase || s.phase, log: s.log.concat(logs || []), contact: Object.assign({}, s.contact, contactPatch || {}), ctx: ctx, listOpen: false });
+var q = s.q;
+if (opts) { (bots || []).forEach(function (b) { if (typeof b === 'string') q = b.split('\n\n').pop(); }); }
+this.setState({ msgs: msgs, opts: opts || null, phase: phase || s.phase, q: q, log: s.log.concat(logs || []), contact: Object.assign({}, s.contact, contactPatch || {}), ctx: ctx, listOpen: false });
 }
 projectList(withAll) {
 var P = this.proj();
@@ -310,6 +319,12 @@ brochure(code) { return { who: 'doc', text: this.proj()[code].brochure, meta: 'P
 summary(last) {
 var c = this.state.ctx;
 return 'Resumen enviado al asesor:\nNombre: ' + (c.nombre || 'María') + '\nContacto: ' + (c.tel || '+51 900 000 321') + '\nProyecto: ' + (c.proyecto || 'Por definir') + '\nMotivo de compra: ' + (c.motivo || 'No indicado') + '\nPresupuesto o inicial: No indicado\nTiempo estimado de compra: No indicado\nÚltima consulta: ' + (last || c.last);
+}
+askAdvisor(userText, botText, reason) {
+var s = this.state;
+this.push(userText, [botText], [{ tag: 'Derivación', text: 'Antes de pasar al asesor, la IA pide confirmación (' + reason + ').' }],
+{ kind: 'buttons', items: [{ label: 'Sí, con un asesor', key: 'advYes' }, { label: 'No, sigo aquí', key: 'advNo' }] }, 'confirmAdv', null,
+{ pend: { reason: reason, opts: s.opts, phase: s.phase, q: s.q } });
 }
 derive(userText, botText, reason) {
 this.push(userText, [botText, { who: 'note', text: 'Conversación derivada a [NOMBRE DEL ASESOR]' }],
@@ -350,7 +365,7 @@ logs.push({ tag: 'Paso 3', text: 'Proyecto ya conocido: se salta la pregunta y p
 msgs.push({ who: 'bot', text: '¡Muchas gracias por registrarte, ' + corto + '! 😊\n\nEstamos listos para ayudarte a encontrar el proyecto que mejor se adapte a lo que buscas. Para comenzar, cuéntame:\n\n*¿Qué proyecto de Go House te interesa conocer?*' });
 opts = this.projectList(true); phase = 'proyecto';
 }
-this.setState({ msgs: msgs, showFlow: false, flowStep: 1, opts: opts, phase: phase,
+this.setState({ msgs: msgs, showFlow: false, flowStep: 1, opts: opts, phase: phase, q: msgs[msgs.length - 1].text.split('\n\n').pop(),
 form: Object.assign({}, f, { nombre: full, doc: doc, correo: correo, telefono: tel }),
 log: s.log.concat(logs),
 contact: Object.assign({}, s.contact, { nombre: full, etapa: 'Registrado' }),
@@ -384,7 +399,12 @@ case 'm_precio':
 return this.push(L, ['¡Buena pregunta! Los precios y las facilidades de compra te los da un asesor con la información actualizada. 😊\n\n*¿Cómo te gustaría conocer ' + P + '?*'],
 [{ tag: 'Regla', text: 'Pidió precios: la IA no da montos y propone la cita o la llamada con un asesor.' }], this.invite(), 'invite', { etapa: 'Interesado' });
 case 'm_lotes':
-return this.derive(L, 'La disponibilidad de lotes la confirma un asesor en tiempo real. Te comunico con él ahora mismo; ya le compartí tu información para que no tengas que repetirla. 😊', 'pidió lotes disponibles');
+return this.askAdvisor(L, 'La disponibilidad de lotes la confirma un asesor en tiempo real. 😊\n\n*¿Quieres que te comunique con un asesor de Go House?*', 'pidió lotes disponibles');
+case 'advYes':
+return this.derive(L, '¡Listo! Te comunico con un asesor de Go House. Ya le compartí tu información para que no tengas que repetirla. Te escribirá por este chat en unos minutos. 😊', c.pend ? c.pend.reason : 'pidió un asesor');
+case 'advNo':
+var pd = c.pend || {};
+return this.push(L, ['¡Perfecto! Sigamos por aquí. 😊' + (pd.q ? '\n\n' + pd.q : '')], [{ tag: 'Derivación', text: 'Prefirió seguir con la IA: vuelve al paso donde estaba.' }], pd.opts || null, pd.phase || 'invite');
 case 'm_visita':
 return this.push(L, ['¡Excelente! 🏡 Será una buena oportunidad para conocer el proyecto y resolver tus dudas.\n\n*¿Qué día te gustaría realizar tu visita?*'],
 [{ tag: 'Meta Ads', text: 'Eligió «Coordinar una visita»: pasa directo al agendamiento.' }, { tag: 'Calendario', text: 'Se consultan las fechas con cupo para visitas a ' + P + '.' }],
@@ -435,7 +455,33 @@ return { kind: 'buttons', items: [{ label: 'Sáb 14 de noviembre', key: 'fecha' 
 }
 sims() {
 var s = this.state, self = this, n = this.nm(), P = s.ctx.proyecto;
-var asesor = { label: 'Pide hablar con un asesor', run: function () { self.derive('Quiero hablar con un asesor', '¡Claro, ' + self.nm() + '! Te comunico con un asesor de Go House. Ya le compartí tu información para que no tengas que repetirla. Te escribirá por este chat en unos minutos. 😊', 'pidió hablar con un asesor'); } };
+var asesor = { label: 'Pide hablar con un asesor', run: function () { self.askAdvisor('Quiero hablar con un asesor', '¡Claro, ' + self.nm() + '! 😊\n\n*¿Quieres que te comunique con un asesor de Go House?*', 'pidió hablar con un asesor'); } };
+var code = s.ctx.code, Pj = this.proj();
+var nav = [];
+if (['necesidad', 'invite', 'fecha', 'hora', 'virtual', 'llamada', 'evaluar', 'evaluando', 'meta', 'done'].indexOf(s.phase) >= 0) {
+nav.push({ label: 'Escribe «menú»', run: function () {
+self.push('Menú', ['¡Claro! Volvamos al inicio. 😊\n\n*¿Qué proyecto de Go House te interesa conocer?*'],
+[{ tag: 'Navegación', text: 'Escribió «menú»: vuelve al paso 3 sin perder sus datos ni su historial.' }], self.projectList(true), 'proyecto');
+} });
+if (code) {
+var nxt = { PAR: 'FDA', FDA: 'CAB', CAB: 'YAK', YAK: 'PAR' }[code];
+nav.push({ label: 'Pregunta por otro proyecto', run: function () {
+var old = self.state.ctx.proyecto, nw = Pj[nxt].name;
+self.push('¿Y qué tal ' + nw + '? También me interesa', ['¡Claro! Te cuento de *' + nw + '*. 😊\n\nPara brindarte información más precisa, quisiera saber:\n\n*¿Qué estás buscando actualmente?*'],
+[{ tag: 'Navegación', text: 'La IA detecta otro proyecto en el mensaje y salta al paso 4 de ' + nw + '. Se registra interés en ' + old + ' y ' + nw + '.' }],
+self.needOpts(nxt), 'necesidad', { proyecto: nw + ' (también ' + old + ')' }, { code: nxt, proyecto: nw });
+} });
+if (s.phase !== 'done') nav.push({ label: 'Hace una pregunta libre', run: function () {
+self.push('¿El proyecto tiene piscina?', [Pj[self.state.ctx.code].faq, 'Retomando donde nos quedamos 👇' + (self.state.q ? '\n\n' + self.state.q : '')],
+[{ tag: 'Navegación', text: 'Pregunta libre: la IA responde con la base de conocimiento y retoma el mismo paso.' }], self.state.opts, self.state.phase);
+} });
+if (s.phase === 'necesidad' || s.phase === 'meta') nav.push({ label: 'Pide visitar sin terminar', run: function () {
+self.push('Quiero ir a verlo este sábado', ['¡Excelente! 🏡 Será una buena oportunidad para conocer el proyecto y resolver tus dudas.\n\n*¿Qué día te gustaría realizar tu visita?*'],
+[{ tag: 'Navegación', text: 'La IA detecta intención de visita y salta directo al paso 6 (agenda).' }], self.dates(), 'fecha', null, { modalidad: 'Visita presencial' });
+} });
+}
+}
+var list = (function () {
 switch (s.phase) {
 case 'flow':
 if (s.reminded) return [];
@@ -463,7 +509,7 @@ self.push('Gracias, lo voy a evaluar', ['¡Claro, ' + n + '! Tómate tu tiempo. 
 { kind: 'buttons', items: [{ label: 'Sí, envíame info', key: 'info' }, { label: 'Agendar una cita', key: 'agendar' }, { label: 'No, gracias', key: 'noGracias' }] }, 'evaluar');
 } },
 { label: 'Pregunta por un lote específico', run: function () {
-self.derive('¿Tienen disponible un lote en esquina?', 'Buena pregunta, ' + n + '. La disponibilidad de cada lote la confirma un asesor en tiempo real, así que te comunico con él ahora mismo. Ya le compartí tu información para que no tengas que repetirla. 😊', 'pidió disponibilidad de un lote específico');
+self.askAdvisor('¿Tienen disponible un lote en esquina?', 'Buena pregunta, ' + n + '. La disponibilidad de cada lote la confirma un asesor en tiempo real. 😊\n\n*¿Quieres que te comunique con un asesor de Go House?*', 'pidió disponibilidad de un lote específico');
 } },
 asesor];
 case 'fecha':
@@ -480,6 +526,8 @@ case 'evaluando':
 return [asesor];
 }
 return [];
+})();
+return nav.concat(list);
 }
 parts(t) {
 return (t || '').split('*').map(function (seg, i) { return { t: seg, b: i % 2 === 1, n: i % 2 === 0 }; }).filter(function (p) { return p.t.length > 0; });
@@ -515,6 +563,7 @@ contact: s.contact,
 entries: entries,
 sims: sims,
 hasSims: sims.length > 0,
+showHint: !!o && ['flow', 'confirmAdv'].indexOf(s.phase) < 0,
 showFlow: s.showFlow,
 step1: s.flowStep === 1,
 step2: s.flowStep === 2,
